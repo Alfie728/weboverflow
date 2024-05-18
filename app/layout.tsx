@@ -19,7 +19,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "WebOverflow",
+  title: "Web Overflow",
   description:
     "A community for developers to ask questions and share knowledge with each other. Built with Clerk, Next.js, and Tailwind CSS. 🚀",
   icons: {
