@@ -28,6 +28,7 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  console.log(author);
   return (
     <>
       <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
@@ -50,11 +51,11 @@ const QuestionCard = ({
         </div>
         <div className="flex-between mt-6 w-full flex-wrap gap-3">
           <Metric
-            imgURL="/assets/icons/avatar.svg"
+            imgURL={author[0].picture}
             alt="user"
-            value={author.name}
+            value={author[0].name}
             title={` - asked ${getTimestamp(createdAt)}`}
-            href={`/profile/${author._id}`}
+            href={`/profile/${author[0]._id}`}
             isAuthor
             textStyles="body-medium small-medium text-dark400_light800"
           />
