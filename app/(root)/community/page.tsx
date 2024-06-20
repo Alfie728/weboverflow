@@ -7,7 +7,7 @@ import UserCard from "@/components/cards/UserCard";
 
 const page = async () => {
   const result = await getAllUsers({});
-  console.log(result.users);
+  // console.log(result.users);
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
