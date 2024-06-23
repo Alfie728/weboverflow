@@ -19,7 +19,7 @@ export default async function Home() {
         <Link href="/ask-question" className="flex justify-end max-sm:w-full">
           <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
             Ask a Question
-          </Button>
+          </Button>~
         </Link>
       </div>
 

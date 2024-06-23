@@ -29,7 +29,7 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionProps) => {
-  console.log(author);
+  // console.log(author);
   return (
     <>
       <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
