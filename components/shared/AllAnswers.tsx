@@ -24,6 +24,7 @@ const AllAnswers = async ({
 }: Props) => {
   const result = await getAnswers({ questionId });
 
+
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
@@ -57,7 +58,15 @@ const AllAnswers = async ({
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                  <Votes />
+                  <Votes
+                    type="Answer"
+                    itemId={JSON.stringify(answer._id)}
+                    userId={JSON.stringify(userId)}
+                    upvotes={answer.upvotes.length}
+                    hasUpVoted={answer.upvotes.includes(userId)}
+                    downvotes={answer.downvotes.length}
+                    hasDownVoted={answer.downvotes.includes(userId)}
+                  />
                 </div>
               </div>
             </div>

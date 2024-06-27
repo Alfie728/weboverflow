@@ -25,7 +25,11 @@ export const getTimestamp = (createdAt: Date): string => {
   return "Just now";
 };
 
-export const formatAndDivideNumber = (num: number): string => {
+export const formatAndDivideNumber = (num?: number): string => {
+  if (typeof num !== "number" || isNaN(num)) {
+    return "0";
+  }
+
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1)}M`;
   }

@@ -18,10 +18,11 @@ const page = async ({ params, searchParams }) => {
   let mongoUser;
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
-    // console.log(mongoUser);
+    console.log(mongoUser._id);
   }
 
   const result = await getQuestionById({ questionId: params._id });
+  // console.log(result.upvotes);
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -42,7 +43,16 @@ const page = async ({ params, searchParams }) => {
             </p>
           </Link>
           <div className="flex justify-end">
-            <Votes />
+            <Votes
+              type="Question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              upvotes={result.upvotes.length}
+              hasUpVoted={result.upvotes.includes(mongoUser._id)}
+              downvotes={result.downvotes.length}
+              hasDownVoted={result.downvotes.includes(mongoUser._id)}
+              hasSaved={mongoUser?.saved.includes(result._id)}
+            />
           </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
@@ -87,7 +97,7 @@ const page = async ({ params, searchParams }) => {
 
       <AllAnswers
         questionId={result._id}
-        userId={JSON.stringify(mongoUser._id)}
+        userId={mongoUser._id}
         totalAnswers={result.answers.length}
       />
 
