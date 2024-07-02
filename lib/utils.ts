@@ -38,3 +38,10 @@ export const formatAndDivideNumber = (num?: number): string => {
   }
   return num.toString();
 };
+
+export const getJoinedDate = (date: Date): string => {
+  const month = date.toLocaleDateString("default", { month: "long" });
+  const year = date.getFullYear();
+
+  return `Joined ${month} ${year}`;
+};
