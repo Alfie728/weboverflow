@@ -13,7 +13,7 @@ interface QuestionProps {
     username: string;
     picture: string;
   };
-  upvotes: number;
+  upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
@@ -54,7 +54,7 @@ const QuestionCard = ({
           <Metric
             imgURL={author.picture}
             alt="user"
-            value={author.name ? author.username : author.name}
+            value={author.name ? author.name : author.username}
             title={` - asked ${getTimestamp(createdAt)}`}
             href={`/profile/${author._id}`}
             isAuthor
@@ -63,7 +63,7 @@ const QuestionCard = ({
           <Metric
             imgURL="/assets/icons/like.svg"
             alt="Upvotes"
-            value={formatAndDivideNumber(upvotes)}
+            value={formatAndDivideNumber(upvotes.length)}
             title="Votes"
             textStyles="small-medium text-dark400_light800"
           />

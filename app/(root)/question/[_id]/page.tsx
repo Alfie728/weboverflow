@@ -10,8 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
+import { URLProps } from "@/types";
 
-const page = async ({ params, searchParams }) => {
+const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
   // console.log(clerkId);
 

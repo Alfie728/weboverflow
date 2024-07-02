@@ -8,6 +8,9 @@ import { upvoteAnswer, downvoteAnswer } from "@/lib/actions/answer.action";
 import { formatAndDivideNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { toggleSaveQuestion } from "@/lib/actions/user.action";
+import { useEffect } from "react";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 
 interface Props {
   type: string;
@@ -33,7 +36,13 @@ const Votes = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    });
+  };
 
   const handleVote = async (action: string) => {
     if (!userId) {
@@ -85,6 +94,14 @@ const Votes = ({
       // TODO: show a toast
     }
   };
+
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(itemId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    });
+
+  }, [itemId, userId, pathname, router]);
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
@@ -142,7 +159,7 @@ const Votes = ({
           height={18}
           alt="star"
           className="cursor-pointer"
-          onClick={() => handleSave}
+          onClick={handleSave}
         />
       )}
     </div>

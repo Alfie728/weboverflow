@@ -26,27 +26,27 @@ const page = async () => {
         />
       </div>
 
-      <section className="mt-12 flex flex-wrap gap-4">
+      <section className="mt-12 grid grid-cols-[repeat(3,minmax(10rem,1fr))] gap-4 ">
         {result.tags.length > 0 ? (
           result.tags.map((tag) => (
             <Link
               href={`/tags/${tag.id}`}
               key={tag._id}
-              className="shadow-light100_darknone"
+              className="shadow-light100_darknone @container"
             >
-              <article className="background-light900_dark200 light-border flex w-full flex-col rounded-2xl border  px-8 py-10 sm:w-[260px]">
-                <div className="background-light800_dark400 w-fit rounded-sm px-5 py-1.5">
+              <article className="background-light900_dark200 light-border flex flex-col rounded-2xl  border px-6 py-8 @[16rem]:flex-row @[16rem]:items-baseline @[16rem]:justify-between">
+                <div className="background-light800_dark400 mx-auto w-fit rounded-lg px-5 py-1.5 @[16rem]:mx-0 ">
                   <p className="paragraph-semibold text-dark300_light900">
                     {tag.name}
                   </p>
                 </div>
 
-                <p className="small-medium text-dark400_light500 mt-3.5">
+                <div className="small-medium text-dark400_light500 mx-auto mt-3.5 flex items-baseline @[16rem]:mx-0">
                   <span className="body-semibold primary-text-gradient mr-2.5">
-                    {tag.questions.length}+
+                    {tag.questions.length}
                   </span>{" "}
                   Questions
-                </p>
+                </div>
               </article>
             </Link>
           ))
