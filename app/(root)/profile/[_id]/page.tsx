@@ -1,4 +1,5 @@
 import ProfileLink from "@/components/shared/ProfileLink";
+import QuestionTab from "@/components/shared/QuestionTab";
 import Stats from "@/components/shared/Stats";
 import { Button } from "@/components/ui/button";
 import { getUserInfo } from "@/lib/actions/user.action";
@@ -16,8 +17,8 @@ const page = async ({ params, searchParams }: URLProps) => {
 
   return (
     <>
-      <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
-        <div className="flex flex-col items-start gap-4 lg:flex-row">
+      <div className="flex justify-between max-sm:grid max-sm:place-content-center max-sm:gap-8">
+        <div className="flex flex-col items-start gap-4 max-sm:items-center lg:flex-row">
           <Image
             src={userInfo?.user.picture}
             alt="profile picture"
@@ -26,11 +27,11 @@ const page = async ({ params, searchParams }: URLProps) => {
             className="rounded-full object-cover"
           />
 
-          <div className="mt-3">
-            <h2 className="h2-bold text-dark100_light900">
+          <div className="mt-3 max-sm:flex max-sm:flex-col max-sm:gap-2">
+            <h2 className="h2-bold text-dark100_light900 max-sm:text-center">
               {userInfo.user.name}
             </h2>
-            <p className="paragraph-regular text-dark200_light800">
+            <p className="paragraph-regular text-dark200_light800 max-sm:text-center">
               @{userInfo.user.username}
             </p>
 
@@ -73,12 +74,15 @@ const page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      <Stats />
+      <Stats
+        totalQuestions={userInfo.totalQuestions}
+        totalAnswers={userInfo.totalAnswers}
+      />
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
             <TabsTrigger value="top-posts" className="tab">
-              Top Posts
+              <QuestionTab />
             </TabsTrigger>
             <TabsTrigger value="answers" className="tab">
               Answers
