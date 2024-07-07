@@ -18,7 +18,7 @@ const page = async ({ params, searchParams }: URLProps) => {
 
   return (
     <>
-      <div className="flex justify-between max-sm:grid max-sm:place-content-center max-sm:gap-8">
+      <div className="flex justify-between max-sm:grid max-sm:place-content-center max-sm:gap-4">
         <div className="flex flex-col items-start gap-4 max-sm:items-center lg:flex-row">
           <Image
             src={userInfo?.user.picture}
@@ -56,14 +56,14 @@ const page = async ({ params, searchParams }: URLProps) => {
               />
             </div>
             {userInfo.user.bio && (
-              <p className="paragraph-regular max-sm:mb-5 max-sm:w-full sm:mt-3">
+              <p className="paragraph-regular mt-4 max-sm:mb-2 max-sm:w-full max-sm:text-center">
                 {userInfo.user.bio}
               </p>
             )}
           </div>
         </div>
 
-        <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
+        <div className="flex justify-end max-sm:mb-5 max-sm:w-full max-sm:justify-center sm:mt-3">
           <SignedIn>
             {clerkId === userInfo.user.clerkId && (
               <Link href="/profile/edit">
