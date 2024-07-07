@@ -45,10 +45,10 @@ const AllAnswers = async ({
                     width={18}
                     height={18}
                     alt="profile picture"
-                    className="rounded-full object-cover max-sm:mt-0.5"
+                    className="rounded-full object-cover max-sm:self-start"
                   />
                   <div className="flex flex-col sm:flex-row sm:items-center">
-                    <p className="body-semibold text-dark300_light700">
+                    <p className="body-semibold text-dark300_light700 ml-1">
                       {answer.author.name}
                     </p>
                     <p className="small-regular text-dark400_light500 ml-1 line-clamp-1 ">

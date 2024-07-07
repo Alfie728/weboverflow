@@ -44,12 +44,16 @@ const Metric = ({
   );
   if (href) {
     return (
-      <Link href={href} className="flex-center gap-1">
+      <Link href={href} className="flex-center gap-1 max-[550px]:justify-start">
         {metricContent}
       </Link>
     );
   }
 
-  return <div className="flex-center flex-wrap gap-1">{metricContent}</div>;
+  return (
+    <div className="flex-center flex-wrap gap-1 max-[550px]:justify-start">
+      {metricContent}
+    </div>
+  );
 };
 export default Metric;
