@@ -7,10 +7,13 @@ import Link from "next/link";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
-  const result = await getQuestions({});
-  // console.log(result);
+export default async function Home({ searchParams }: SearchParamsProps) {
+  // console.log(searchParams);
+  const result = await getQuestions({
+    searchQuery: searchParams.q,
+  });
 
   return (
     <>
