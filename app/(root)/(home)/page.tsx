@@ -13,6 +13,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   // console.log(searchParams);
   const result = await getQuestions({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (

@@ -9,6 +9,7 @@ import { SearchParamsProps } from "@/types";
 const page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllUsers({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
   // console.log(result.users);
   return (
@@ -29,7 +30,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <section className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-4">
+      <section className="mt-12 grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
