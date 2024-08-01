@@ -10,14 +10,14 @@ const RightSidebar = async () => {
   const popularTags = await getTopPopularTags();
   return (
     <section className="custom-scrollbar  background-light900_dark200 light-border sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
-      <div>
+      <div className="mt-20">
         <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
-        <div className="mt-7 flex w-full flex-col gap-[30px]">
+        <div className="mt-4 flex w-full flex-col ">
           {hotQuestions.map(({ _id, title }) => (
             <Link
               href={`/question/${_id}`}
               key={_id}
-              className="flex cursor-pointer items-center justify-between gap-7"
+              className="flex cursor-pointer items-center justify-between gap-7 rounded-lg p-4 hover:bg-light-700"
             >
               <span className="body-medium text-dark500_light700">{title}</span>
               <Image
@@ -32,15 +32,20 @@ const RightSidebar = async () => {
       </div>
       <div className="mt-16">
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
-        <div className="mt-7 flex flex-col gap-4">
+        <div className="ml-[16px] mr-[24px] mt-7 flex flex-col gap-4">
           {popularTags.map((tag) => (
-            <RenderTag
+            <div
               key={tag._id}
-              _id={tag._id}
-              name={tag.name}
-              totalQuestions={tag.numberOfQuestions}
-              showCount
-            />
+              className="transition hover:scale-105
+            "
+            >
+              <RenderTag
+                _id={tag._id}
+                name={tag.name}
+                totalQuestions={tag.numberOfQuestions}
+                showCount
+              />
+            </div>
           ))}
         </div>
       </div>
