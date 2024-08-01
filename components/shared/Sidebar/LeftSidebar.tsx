@@ -13,7 +13,7 @@ const LeftSidebar = () => {
   console.log(userId);
 
   return (
-    <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen w-fit flex-col justify-around border-r p-6 shadow-light-300 dark:shadow-none max-lg:p-3 max-sm:hidden ">
+    <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen flex-col justify-around border-r p-12 shadow-light-300 dark:shadow-none max-xl:p-6 max-lg:w-fit max-lg:p-3 max-sm:hidden xl:w-[350px]">
       <div className="flex w-full flex-1 flex-col gap-6 pt-[200px] max-lg:pt-[212px]">
         {sidebarLinks.map((item) => {
           const isActive =

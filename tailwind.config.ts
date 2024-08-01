@@ -16,6 +16,10 @@ module.exports = {
       },
     },
     extend: {
+      flexGrow: {
+        2: "2",
+        3: "3",
+      },
       colors: {
         primary: {
           500: "#FF7000",

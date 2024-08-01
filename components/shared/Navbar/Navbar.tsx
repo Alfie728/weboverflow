@@ -22,7 +22,8 @@ const Navbar = () => {
 
       <GlobalSearch />
 
-      <div className="flex-between gap-5 ">
+      <div className="flex-between gap-5 xl:w-[220px]">
+        <div className="flex-1"></div>
         <Theme />
         <SignedIn>
           <UserButton
