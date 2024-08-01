@@ -5,16 +5,15 @@ import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="background-light850_dark100 relative">
+    <main className="relative">
       <Navbar />
       <div className="flex">
         <LeftSidebar />
-        <section className="flex min-h-screen flex-1 flex-col  overflow-x-scroll p-6 pt-36 max-md:pb-14 sm:px-14">
+        <section className="flex min-h-screen flex-1 flex-col overflow-auto p-6 pt-36 sm:px-14">
           <div className="mx-auto max-w-[80ch]">{children}</div>
         </section>
         <RightSidebar />
       </div>
-      Toaster
     </main>
   );
 };
