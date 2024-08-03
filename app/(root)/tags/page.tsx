@@ -32,7 +32,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <section className="mt-12 grid grid-cols-[repeat(3,minmax(10rem,1fr))] gap-4 ">
+      <section className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-4 ">
         {result.tags.length > 0 ? (
           result.tags.map((tag) => (
             <Link
@@ -41,7 +41,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
               className="shadow-light100_darknone @container"
             >
               <article className="background-light900_dark200 light-border flex flex-col rounded-2xl  border px-6 py-8 @[16rem]:flex-row @[16rem]:items-baseline @[16rem]:justify-between">
-                <div className="background-light800_dark400 mx-auto w-fit rounded-lg px-5 py-1.5 @[16rem]:mx-0 ">
+                <div className="background-light700_dark400 mx-auto w-fit rounded-lg px-5 py-1.5 @[16rem]:mx-0 ">
                   <p className="paragraph-semibold text-dark300_light900">
                     {tag.name}
                   </p>
