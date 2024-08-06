@@ -37,7 +37,7 @@ const QuestionCard = ({
   const showActionButtons = clerkId && clerkId === author.clerkId;
   return (
     <>
-      <div className="card-wrapper rounded-[10px] border p-9 shadow-md transition-transform hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:hover:bg-dark-400 sm:px-11">
+      <div className="card-wrapper rounded-[10px] border p-9 shadow-lg transition-transform hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:hover:bg-dark-400 sm:px-11">
         <div className="flex items-start justify-between gap-5 max-[550px]:flex-col-reverse max-[550px]:gap-2.5">
           <div className="flex-1">
             <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
@@ -59,7 +59,12 @@ const QuestionCard = ({
 
         <div className="mt-3.5 flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
+            <RenderTag
+              key={tag._id}
+              _id={tag._id}
+              name={tag.name}
+              otherClasses="shadow-md"
+            />
           ))}
         </div>
         <div className="mt-6 flex flex-wrap justify-between gap-3 max-[550px]:grid max-[550px]:grid-cols-2">
