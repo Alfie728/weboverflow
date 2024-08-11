@@ -57,13 +57,12 @@ const QuestionCard = ({
           </SignedIn>
         </div>
 
-        <div className="mt-3.5 flex flex-wrap gap-2">
+        <div className="mt-3.5 flex flex-wrap gap-2 [&_a]:shadow-md">
           {tags.map((tag) => (
             <RenderTag
               key={tag._id}
               _id={tag._id}
               name={tag.name}
-              otherClasses="shadow-md"
             />
           ))}
         </div>
