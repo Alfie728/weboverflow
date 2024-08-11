@@ -17,21 +17,21 @@ const Theme = () => {
   return (
     <Menubar className="relative border border-transparent bg-transparent shadow-none">
       <MenubarMenu>
-        <MenubarTrigger className="hover:cursor-pointer focus:bg-light-900 data-[state=open]:bg-light-900 dark:focus:bg-dark-200 dark:data-[state=open]:bg-dark-200">
+        <MenubarTrigger className="hover:cursor-pointer focus:bg-light-900 data-[state=open]:bg-light-900 dark:pr-4 dark:focus:bg-dark-200 dark:data-[state=open]:bg-dark-200">
           {mode === "light" ? (
             <Image
               src="/assets/icons/sun.svg"
               alt="sun"
-              width={20}
-              height={20}
+              width={30}
+              height={30}
               className="active-theme"
             />
           ) : (
             <Image
               src="/assets/icons/moon.svg"
               alt="moon"
-              width={20}
-              height={20}
+              width={25}
+              height={25}
               className="active-theme"
             />
           )}

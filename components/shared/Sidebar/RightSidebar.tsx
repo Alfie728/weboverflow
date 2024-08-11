@@ -17,7 +17,7 @@ const RightSidebar = async () => {
             <Link
               href={`/question/${_id}`}
               key={_id}
-              className="flex cursor-pointer items-center justify-between gap-7 rounded-lg p-4 hover:bg-light-700 dark:hover:bg-dark-400"
+              className="flex cursor-pointer items-center justify-between gap-7 rounded-lg p-4 hover:bg-light-800 dark:hover:bg-dark-400"
             >
               <span className="body-medium text-dark500_light700">{title}</span>
               <Image
@@ -33,11 +33,11 @@ const RightSidebar = async () => {
       </div>
       <div className="mt-12">
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
-        <div className="ml-[16px] mr-[24px] mt-7 flex flex-col gap-4">
+        <div className="mt-7 flex flex-col">
           {popularTags.map((tag) => (
             <div
               key={tag._id}
-              className="transition hover:scale-105
+              className="rounded-lg border border-transparent p-2 pr-6 transition hover:bg-light-800 dark:hover:bg-dark-400
             "
             >
               <RenderTag
