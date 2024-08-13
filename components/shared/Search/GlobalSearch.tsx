@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import GlobalResult from "./GlobalResult";
@@ -11,8 +11,8 @@ const GlobalSearch = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const searchContainerRef = useRef(null);
-  const searchInputRef = useRef(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const query = searchParams.get("global");
 
@@ -20,33 +20,25 @@ const GlobalSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   // console.log(search);
 
+  const handleClick = useCallback((event: MouseEvent) => {
+    if (searchInputRef.current === event.target) {
+      setIsOpen(true);
+    } else if (
+      searchContainerRef.current &&
+      !searchContainerRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+      setSearch("");
+    }
+  }, []);
+
   useEffect(() => {
-    const handleSearchBarClick = (event: any) => {
-      if (searchInputRef.current === event.target) {
-        setIsOpen(true);
-      }
-    };
-
-    const handleOutsideClick = (event: any) => {
-      if (
-        searchContainerRef.current &&
-        // @ts-ignore
-        !searchContainerRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-        setSearch("");
-      }
-    };
-    setIsOpen(false);
-
-    document.addEventListener("click", handleOutsideClick);
-    document.addEventListener("click", handleSearchBarClick);
+    document.addEventListener("click", handleClick);
 
     return () => {
-      document.removeEventListener("click", handleOutsideClick);
-      document.removeEventListener("click", handleSearchBarClick);
+      document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [handleClick]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
