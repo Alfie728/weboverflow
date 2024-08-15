@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 interface CustomInputProps {
-  route: string;
   iconPosition: string;
   imgSrc: string;
   placeholder: string;
@@ -15,47 +14,19 @@ interface CustomInputProps {
 }
 
 const LocalSearchBar = ({
-  route,
   iconPosition,
   imgSrc,
   placeholder,
   otherClasses,
 }: CustomInputProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const query = searchParams.get("q");
 
   const [search, setSearch] = useState(query || "");
-  // console.log(search);
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (search) {
-        const newUrl = formUrlQuery({
-          params: searchParams.toString(),
-          key: "q",
-          value: search,
-        });
+  useDebounce(search, 500, "q");
 
-        router.push(newUrl, { scroll: false });
-      } else {
-        if (pathname === route) {
-          const newUrl = removeKeysFromQuery({
-            params: searchParams.toString(),
-            keysToRemove: ["q"],
-          });
-
-          router.push(newUrl, { scroll: false });
-        }
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [search, route, pathname, router, searchParams, query]);
-
-  // console.log(query);
   return (
     <div
       className={`flex min-h-[56px] grow items-center gap-4 rounded-[10px] bg-light-800 px-4 dark:bg-dark-200 ${otherClasses}`}
@@ -90,4 +61,5 @@ const LocalSearchBar = ({
     </div>
   );
 };
+
 export default LocalSearchBar;

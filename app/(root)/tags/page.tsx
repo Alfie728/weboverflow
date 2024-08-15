@@ -20,7 +20,6 @@ const page = async ({ searchParams }: SearchParamsProps) => {
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
-          route="/tags"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search by tag name"
@@ -32,7 +31,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <section className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-4 ">
+      <section className="mt-12 grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-4 ">
         {result.tags.length > 0 ? (
           result.tags.map((tag) => (
             <Link

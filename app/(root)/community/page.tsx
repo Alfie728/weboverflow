@@ -20,7 +20,6 @@ const page = async ({ searchParams }: SearchParamsProps) => {
 
       <div className="mt-11 flex w-full justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
-          route="/community"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search for amazing minds"

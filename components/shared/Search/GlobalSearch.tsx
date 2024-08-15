@@ -13,7 +13,7 @@ const GlobalSearch = () => {
     useModal();
   const [search, setSearch] = useState("");
 
-  useDebounce(search, 500);
+  useDebounce(search, 500, "global");
 
   return (
     <div

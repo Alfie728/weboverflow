@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
-const useDebounce = (search: string, delay: number) => {
+const useDebounce = (search: string, delay: number, key: string = "global") => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -14,16 +14,16 @@ const useDebounce = (search: string, delay: number) => {
       if (search) {
         const newUrl = formUrlQuery({
           params: searchParams.toString(),
-          key: "global",
+          key,
           value: search,
         });
         router.push(newUrl, { scroll: false });
       } else {
-        const query = searchParams.get("global");
+        const query = searchParams.get(key);
         if (query) {
           const newUrl = removeKeysFromQuery({
             params: searchParams.toString(),
-            keysToRemove: ["global", "type"],
+            keysToRemove: [key],
           });
           router.push(newUrl, { scroll: false });
         }
@@ -31,7 +31,7 @@ const useDebounce = (search: string, delay: number) => {
     }, delay);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [search, delay, pathname, router, searchParams]);
+  }, [search, delay, pathname, router, searchParams, key]);
 };
 
 export default useDebounce;
