@@ -24,7 +24,9 @@ const Navbar = () => {
 
       <div className="flex-between gap-5 xl:w-[220px]">
         <div className="flex-1"></div>
-        <Theme />
+        <div className="w-[60px]">
+          <Theme />
+        </div>
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"

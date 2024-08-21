@@ -1,16 +1,16 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-interface UseModalProps {
+interface UseGlobalSearchModalProps {
   initialState?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
 }
 
-const useModal = ({
+const useGlobalSearchModal = ({
   initialState = false,
   onOpen,
   onClose,
-}: UseModalProps = {}) => {
+}: UseGlobalSearchModalProps = {}) => {
   const [isOpen, setIsOpen] = useState(initialState);
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -54,15 +54,27 @@ const useModal = ({
     [closeModal]
   );
 
+  const handleCommandK = useCallback(
+    (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        event.preventDefault();
+        toggleModal();
+      }
+    },
+    [toggleModal]
+  );
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleEscapeKey);
+    document.addEventListener("keydown", handleCommandK);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener("keydown", handleCommandK);
     };
-  }, [handleClickOutside, handleEscapeKey]);
+  }, [handleClickOutside, handleEscapeKey, handleCommandK]);
 
   return {
     isOpen,
@@ -74,4 +86,4 @@ const useModal = ({
   };
 };
 
-export default useModal;
+export default useGlobalSearchModal;
