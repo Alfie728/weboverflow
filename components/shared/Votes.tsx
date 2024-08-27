@@ -33,35 +33,37 @@ const Votes = ({
   hasDownVoted,
   hasSaved,
 }: Props) => {
+  const cleanItemId = itemId.replace(/^"|"$/g, '');
+  const cleanUserId = userId ? userId.replace(/^"|"$/g, '') : '';
   const pathname = usePathname();
   const router = useRouter();
 
   const handleSave = async () => {
     await toggleSaveQuestion({
-      userId: JSON.parse(userId),
-      questionId: JSON.parse(itemId),
+      userId: cleanUserId,
+      questionId: cleanItemId,
       path: pathname,
     });
   };
 
   const handleVote = async (action: string) => {
-    if (!userId) {
+    if (!cleanUserId) {
       return;
     }
 
     if (action === "upvote") {
       if (type === "Question") {
         await upvoteQuestion({
-          questionId: JSON.parse(itemId),
-          userId: JSON.parse(userId),
+          questionId: cleanItemId,
+          userId: cleanUserId,
           hasUpVoted,
           hasDownVoted,
           path: pathname,
         });
       } else if (type === "Answer") {
         await upvoteAnswer({
-          answerId: JSON.parse(itemId),
-          userId: JSON.parse(userId),
+          answerId: cleanItemId,
+          userId: cleanUserId,
           hasUpVoted,
           hasDownVoted,
           path: pathname,
@@ -75,16 +77,16 @@ const Votes = ({
     if (action === "downvote") {
       if (type === "Question") {
         await downvoteQuestion({
-          questionId: JSON.parse(itemId),
-          userId: JSON.parse(userId),
+          questionId: cleanItemId,
+          userId: cleanUserId,
           hasUpVoted,
           hasDownVoted,
           path: pathname,
         });
       } else if (type === "Answer") {
         await downvoteAnswer({
-          answerId: JSON.parse(itemId),
-          userId: JSON.parse(userId),
+          answerId: cleanItemId,
+          userId: cleanUserId,
           hasUpVoted,
           hasDownVoted,
           path: pathname,
@@ -96,12 +98,14 @@ const Votes = ({
   };
 
   useEffect(() => {
-    viewQuestion({
-      questionId: JSON.parse(itemId),
-      userId: userId ? JSON.parse(userId) : undefined,
-    });
+    if (type === "Question") {
+      viewQuestion({
+        questionId: cleanItemId,
+        userId: cleanUserId || undefined,
+      });
+    }
+  }, [cleanItemId, cleanUserId, type, pathname, router]);
 
-  }, [itemId, userId, pathname, router]);
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
