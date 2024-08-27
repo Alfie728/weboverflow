@@ -26,6 +26,7 @@
     "clsx": "^2.1.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-tailwindcss": "^3.15.1",
+    "framer-motion": "^11.3.30",
     "html-react-parser": "^5.1.10",
     "lucide-react": "^0.378.0",
     "mongodb": "^6.7.0",
