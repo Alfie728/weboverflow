@@ -78,9 +78,8 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
       const aiAnswer = await response.json();
 
-      // convert aiAnswer.reply to html
-
-      const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
+      // Convert markdown to HTML
+      const formattedAnswer = convertMarkdownToHTML(aiAnswer.reply);
 
       if (editorRef.current) {
         const editor = editorRef.current as any;
@@ -90,11 +89,60 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
       // Toast
     } catch (error) {
+      console.error("Error generating AI answer:", error);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingAI(false);
     }
   };
 
+  const convertMarkdownToHTML = (markdown: string) => {
+    // Function to escape HTML within code blocks
+    const escapeHTML = (code: string) => {
+      return code
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    // Replace code blocks
+    let html = markdown.replace(
+      /```(\w+)?\n([\s\S]*?)```/g,
+      (_, lang, code) => {
+        return `<pre><code class="language-${lang || "plaintext"}">${escapeHTML(
+          code
+        )}</code></pre>`;
+      }
+    );
+
+    // Replace inline code
+    html = html.replace(
+      /`([^`]+)`/g,
+      (_, code) => `<code>${escapeHTML(code)}</code>`
+    );
+
+    // Replace headings
+    html = html.replace(/^(#{1,6})\s(.*)$/gm, (_, hashes, content) => {
+      const level = hashes.length;
+      return `<h${level}>${content.trim()}</h${level}>`;
+    });
+
+    // Replace line breaks, but not inside HTML tags or code blocks
+    html = html.replace(
+      /(<pre[\s\S]*?<\/pre>|<[^>]*>)|([^\n])\n(?!\n)([^\n])/g,
+      (_, preserved, before, after) => {
+        if (preserved) return preserved;
+        return `${before}<br>${after}`;
+      }
+    );
+
+    // Wrap content in paragraphs if not already wrapped, excluding existing HTML tags
+    html = html.replace(/(?<!>)([^<>\n]+)(?!<)(?:\n\n|\n?$)/g, "<p>$1</p>");
+
+    return html;
+  };
+  
   return (
     <div>
       <div className="mt-8 flex flex-col items-baseline justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
