@@ -20,6 +20,7 @@ interface Props {
   };
   upvotes: number;
   createdAt: Date;
+  content: string;
 }
 
 const AnswerCard = ({
@@ -29,6 +30,7 @@ const AnswerCard = ({
   author,
   upvotes,
   createdAt,
+  content,
 }: Props) => {
   const showActionButtons = clerkId && clerkId === author.clerkId;
 
@@ -42,7 +44,7 @@ const AnswerCard = ({
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimestamp(createdAt)}
           </span>
-          <h3 className="sm:h3-semibold base-semibold text-dark200_light900  flex-1">
+          <h3 className="sm:h3-semibold base-semibold text-dark200_light900 flex-1">
             {question.title}
           </h3>
         </div>
@@ -52,6 +54,10 @@ const AnswerCard = ({
             <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
           )}
         </SignedIn>
+      </div>
+
+      <div className="text-dark400_light700 mt-3">
+        <p className="line-clamp-2 text-sm">{content}</p>
       </div>
 
       <div className="mt-6 flex flex-wrap justify-between gap-3 max-[550px]:grid max-[550px]:grid-cols-2">

@@ -18,8 +18,8 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import { BadgeCriteriaType } from "@/types";
-import { assignBadges } from "../utils";
 import { ANSWERS_PAGE_SIZE, USERS_PAGE_SIZE } from "@/constants";
+import { stripHtml, assignBadges } from "@/lib/utils"; // Add this import
 
 export async function getUserById(params: GetUserByIdParams) {
   try {
@@ -382,11 +382,17 @@ export async function getUserAnswers(params: GetUserStatsParams) {
       .skip(skipAmount)
       .limit(pageSize)
       .populate("question", "_id title")
-      .populate("author", "_id clerkId username name picture");
+      .populate("author", "_id clerkId username name picture")
+      .select("_id content createdAt upvotes");
+
+    const strippedUserAnswers = userAnswers.map((answer) => ({
+      ...answer.toObject(),
+      content: stripHtml(answer.content),
+    }));
 
     const isNextAnswers = totalAnswers > skipAmount + userAnswers.length;
 
-    return { totalAnswers, answers: userAnswers, isNextAnswers };
+    return { totalAnswers, answers: strippedUserAnswers, isNextAnswers };
   } catch (error) {
     console.log(error);
     throw error;

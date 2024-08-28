@@ -176,3 +176,7 @@ export const convertMarkdownToHTML = (markdown: string) => {
 
   return html;
 };
+
+export function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '');
+}

@@ -8,6 +8,7 @@ interface Props extends SearchParamsProps {
   userId: string;
   clerkId?: string | null;
 }
+
 const AnswerTab = async ({ searchParams, userId, clerkId }: Props) => {
   const result = await getUserAnswers({
     userId,
@@ -27,6 +28,7 @@ const AnswerTab = async ({ searchParams, userId, clerkId }: Props) => {
           author={item.author}
           upvotes={item.upvotes.length}
           createdAt={item.createdAt}
+          content={item.content} // Pass the content here
         />
       ))}
       <div className="mt-10">
@@ -39,4 +41,5 @@ const AnswerTab = async ({ searchParams, userId, clerkId }: Props) => {
     </>
   );
 };
+
 export default AnswerTab;
