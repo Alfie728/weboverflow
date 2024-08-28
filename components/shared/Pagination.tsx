@@ -3,23 +3,28 @@
 import { formUrlQuery } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PROFILE_PAGE_RANGE } from "@/constants";
+import { PAGINATION_PAGE_RANGE } from "@/constants";
 
 interface PaginationProps {
   pageNumber: number;
   isNext: boolean;
   totalPages: number;
-  tabName: 'questions' | 'answers';
+  tabName?: "questions" | "answers";
 }
 
-const Pagination = ({ pageNumber, isNext, totalPages, tabName }: PaginationProps) => {
+const Pagination = ({
+  pageNumber,
+  isNext,
+  totalPages,
+  tabName,
+}: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleNavigation = (page: number) => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
-      key: `${tabName}Page`,
+      key: tabName ? `${tabName}Page` : "page",
       value: page.toString(),
     });
 
@@ -28,9 +33,9 @@ const Pagination = ({ pageNumber, isNext, totalPages, tabName }: PaginationProps
 
   const renderPageButtons = () => {
     const buttons = [];
-    const pageGroup = Math.ceil(pageNumber / PROFILE_PAGE_RANGE);
-    const startPage = (pageGroup - 1) * PROFILE_PAGE_RANGE + 1;
-    const endPage = Math.min(startPage + PROFILE_PAGE_RANGE - 1, totalPages);
+    const pageGroup = Math.ceil(pageNumber / PAGINATION_PAGE_RANGE);
+    const startPage = (pageGroup - 1) * PAGINATION_PAGE_RANGE + 1;
+    const endPage = Math.min(startPage + PAGINATION_PAGE_RANGE - 1, totalPages);
 
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
@@ -50,8 +55,11 @@ const Pagination = ({ pageNumber, isNext, totalPages, tabName }: PaginationProps
     return buttons;
   };
 
-  const currentGroup = Math.ceil(pageNumber / PROFILE_PAGE_RANGE);
-  const lastGroupFirstPage = (Math.ceil(totalPages / PROFILE_PAGE_RANGE) - 1) * PROFILE_PAGE_RANGE + 1;
+  const currentGroup = Math.ceil(pageNumber / PAGINATION_PAGE_RANGE);
+  const lastGroupFirstPage =
+    (Math.ceil(totalPages / PAGINATION_PAGE_RANGE) - 1) *
+      PAGINATION_PAGE_RANGE +
+    1;
 
   if (totalPages <= 1) {
     return null;
@@ -75,7 +83,9 @@ const Pagination = ({ pageNumber, isNext, totalPages, tabName }: PaginationProps
       </Button>
       {currentGroup > 1 && (
         <Button
-          onClick={() => handleNavigation((currentGroup - 1) * PROFILE_PAGE_RANGE)}
+          onClick={() =>
+            handleNavigation((currentGroup - 1) * PAGINATION_PAGE_RANGE)
+          }
           className="light-border-2 flex min-h-[36px] items-center justify-center gap-2 border transition hover:bg-light-700 dark:hover:bg-dark-400"
         >
           <p className="body-medium text-dark200_light800">...</p>
@@ -84,7 +94,9 @@ const Pagination = ({ pageNumber, isNext, totalPages, tabName }: PaginationProps
       {renderPageButtons()}
       {pageNumber < lastGroupFirstPage && (
         <Button
-          onClick={() => handleNavigation(currentGroup * PROFILE_PAGE_RANGE + 1)}
+          onClick={() =>
+            handleNavigation(currentGroup * PAGINATION_PAGE_RANGE + 1)
+          }
           className="light-border-2 flex min-h-[36px] items-center justify-center gap-2 border transition hover:bg-light-700 dark:hover:bg-dark-400"
         >
           <p className="body-medium text-dark200_light800">...</p>

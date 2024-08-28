@@ -3,7 +3,12 @@ import { SidebarLink } from "@/types";
 export const themes = [
   { value: "light", label: "Light", icon: "/assets/icons/sun.svg", size: 24 },
   { value: "dark", label: "Dark", icon: "/assets/icons/moon.svg", size: 20 },
-  { value: "system", label: "System", icon: "/assets/icons/computer.svg", size: 28 },
+  {
+    value: "system",
+    label: "System",
+    icon: "/assets/icons/computer.svg",
+    size: 28,
+  },
 ];
 
 export const sidebarLinks: SidebarLink[] = [
@@ -72,9 +77,9 @@ export const BADGE_CRITERIA = {
   },
 };
 
-export const ANSWERS_PAGE_SIZE = 1;
+export const ANSWERS_PAGE_SIZE = 8;
 export const TAG_QUESTIONS_PAGE_SIZE = 8;
-export const QUESTIONS_PAGE_SIZE = 1;
+export const QUESTIONS_PAGE_SIZE = 8;
 export const USERS_PAGE_SIZE = 12;
 export const TAGS_PAGE_SIZE = 12;
-export const PROFILE_PAGE_RANGE = 5;
+export const PAGINATION_PAGE_RANGE = 5;
