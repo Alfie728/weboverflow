@@ -49,37 +49,25 @@ const Theme = () => {
     }
   };
 
-  const getThemeIcon = (theme: string) => {
-    const iconMap = {
-      light: { src: "/assets/icons/sun.svg", size: 24 },
-      dark: { src: "/assets/icons/moon.svg", size: 20 },
-      system: { src: "/assets/icons/computer.svg", size: 28 }, // Slightly larger
-    };
-    return iconMap[theme as keyof typeof iconMap] || iconMap.system;
-  };
+  const currentTheme = themes.find(theme => theme.value === selectedTheme) || themes[2]; // Default to system
 
   return (
     <Menubar className="relative border-transparent bg-transparent shadow-none">
       <MenubarMenu>
         <MenubarTrigger className="hover:cursor-pointer focus:bg-light-900 data-[state=open]:bg-light-900 dark:focus:bg-dark-200 dark:data-[state=open]:bg-dark-200">
-          {(() => {
-            const { src, size } = getThemeIcon(selectedTheme);
-            return (
-              <div style={{ width: `${size}px`, height: `${size}px` }}>
-                <Image
-                  src={src}
-                  alt={selectedTheme}
-                  width={size}
-                  height={size}
-                  className="active-theme"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-            );
-          })()}
+          <div style={{ width: `${currentTheme.size}px`, height: `${currentTheme.size}px` }}>
+            <Image
+              src={currentTheme.icon}
+              alt={currentTheme.label}
+              width={currentTheme.size}
+              height={currentTheme.size}
+              className="active-theme"
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
         </MenubarTrigger>
-        <MenubarContent className="absolute -right-12 mt-3 min-w-[120px] rounded border bg-light-900 p-2 dark:border-dark-400 dark:bg-dark-300">
-          {themes.map(({ value, icon, label }) => (
+        <MenubarContent className="absolute -right-12 mt-3 min-w-[120px] rounded border bg-light-900 py-2 dark:border-dark-400 dark:bg-dark-300">
+          {themes.map(({ value, icon, label, size }) => (
             <MenubarItem
               key={value}
               onClick={() => handleThemeChange(value)}
@@ -94,9 +82,7 @@ const Theme = () => {
               />
               <p
                 className={`body-semibold ${
-                  selectedTheme === value
-                    ? "text-primary-500"
-                    : "text-dark100_light900"
+                  selectedTheme === value ? "text-primary-500" : "text-dark100_light900"
                 }`}
               >
                 {label}
