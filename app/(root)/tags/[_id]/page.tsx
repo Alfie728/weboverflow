@@ -4,7 +4,7 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { URLProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-import { TAG_QUESTIONS_PAGE_SIZE } from "@/constants";
+import { QUESTIONS_PAGE_SIZE } from "@/constants";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionsByTagId({
@@ -13,7 +13,7 @@ const page = async ({ params, searchParams }: URLProps) => {
     searchQuery: searchParams.q,
   });
 
-  const totalPages = Math.ceil(result.totalQuestions / TAG_QUESTIONS_PAGE_SIZE);
+  const totalPages = Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE);
 
   return (
     <>

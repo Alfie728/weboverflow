@@ -10,7 +10,7 @@ import {
 import Tag, { ITag } from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
-import { TAG_QUESTIONS_PAGE_SIZE, TAGS_PAGE_SIZE } from "@/constants";
+import { QUESTIONS_PAGE_SIZE, TAGS_PAGE_SIZE } from "@/constants";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -92,7 +92,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     const {
       tagId,
       page = 1,
-      pageSize = TAG_QUESTIONS_PAGE_SIZE,
+      pageSize = QUESTIONS_PAGE_SIZE,
       searchQuery,
     } = params;
     const skipAmount = (page - 1) * pageSize;
