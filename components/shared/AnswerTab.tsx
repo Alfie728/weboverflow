@@ -1,21 +1,25 @@
 import { getUserAnswers } from "@/lib/actions/user.action";
-import { SearchParamsProps } from "@/types";
 import AnswerCard from "../cards/AnswerCard";
 import Pagination from "./Pagination";
 import { ANSWERS_PAGE_SIZE } from "@/constants";
 
-interface Props extends SearchParamsProps {
+interface AnswerTabProps {
+  searchParams: { [key: string]: string | undefined };
   userId: string;
   clerkId?: string | null;
+  pageNumber: number;
 }
 
-const AnswerTab = async ({ searchParams, userId, clerkId }: Props) => {
+const AnswerTab = async ({
+  searchParams,
+  userId,
+  clerkId,
+  pageNumber,
+}: AnswerTabProps) => {
   const result = await getUserAnswers({
     userId,
-    page: searchParams.page ? +searchParams.page : 1,
+    page: pageNumber,
   });
-
-  const totalPages = Math.ceil(result.totalAnswers / ANSWERS_PAGE_SIZE);
 
   return (
     <>
@@ -28,16 +32,15 @@ const AnswerTab = async ({ searchParams, userId, clerkId }: Props) => {
           author={item.author}
           upvotes={item.upvotes.length}
           createdAt={item.createdAt}
-          content={item.content} // Pass the content here
+          content={item.content}
         />
       ))}
-      <div className="mt-10">
-        <Pagination
-          pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={result.isNextAnswers}
-          totalPages={totalPages}
-        />
-      </div>
+      <Pagination
+        pageNumber={pageNumber}
+        isNext={result.isNextAnswers}
+        totalPages={Math.ceil(result.totalAnswers / ANSWERS_PAGE_SIZE)}
+        tabName="answers"
+      />
     </>
   );
 };

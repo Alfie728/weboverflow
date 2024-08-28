@@ -18,7 +18,11 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import { BadgeCriteriaType } from "@/types";
-import { ANSWERS_PAGE_SIZE, USERS_PAGE_SIZE } from "@/constants";
+import {
+  ANSWERS_PAGE_SIZE,
+  QUESTIONS_PAGE_SIZE,
+  USERS_PAGE_SIZE,
+} from "@/constants";
 import { stripHtml, assignBadges } from "@/lib/utils"; // Add this import
 
 export async function getUserById(params: GetUserByIdParams) {
@@ -343,7 +347,7 @@ export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 10 } = params;
+    const { userId, page = 1, pageSize = QUESTIONS_PAGE_SIZE } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const totalQuestions = await Question.countDocuments({

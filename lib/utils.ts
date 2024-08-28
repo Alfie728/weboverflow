@@ -135,48 +135,98 @@ export const convertMarkdownToHTML = (markdown: string) => {
   // Split the markdown into code blocks and non-code parts
   const parts = markdown.split(/(```[\s\S]*?```)/);
 
-  const html = parts.map((part, index) => {
-    if (part.startsWith('```') && part.endsWith('```')) {
-      // Handle code blocks
-      const [, lang, code] = part.match(/```(\w+)?\n([\s\S]*?)```/) || [];
-      return `<pre><code class="language-${lang || "plaintext"}">${escapeHTML(code?.trim() ?? '')}</code></pre>`;
-    } else {
-      // Handle non-code parts
-      let processed = part;
+  const html = parts
+    .map((part, index) => {
+      if (part.startsWith("```") && part.endsWith("```")) {
+        // Handle code blocks
+        const [, lang, code] = part.match(/```(\w+)?\n([\s\S]*?)```/) || [];
+        return `<pre><code class="language-${lang || "plaintext"}">${escapeHTML(
+          code?.trim() ?? ""
+        )}</code></pre>`;
+      } else {
+        // Handle non-code parts
+        let processed = part;
 
-      // Replace inline code
-      processed = processed.replace(/`([^`]+)`/g, (_, code) => `<code>${escapeHTML(code)}</code>`);
+        // Replace inline code
+        processed = processed.replace(
+          /`([^`]+)`/g,
+          (_, code) => `<code>${escapeHTML(code)}</code>`
+        );
 
-      // Replace headings
-      processed = processed.replace(/^(#{1,6})\s(.*)$/gm, (_, hashes, content) => {
-        const level = hashes.length;
-        return `<h${level}>${content.trim()}</h${level}>`;
-      });
+        // Replace headings
+        processed = processed.replace(
+          /^(#{1,6})\s(.*)$/gm,
+          (_, hashes, content) => {
+            const level = hashes.length;
+            return `<h${level}>${content.trim()}</h${level}>`;
+          }
+        );
 
-      // Replace bold text
-      processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Replace bold text
+        processed = processed.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-      // Replace italic text
-      processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        // Replace italic text
+        processed = processed.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-      // Replace highlight text
-      processed = processed.replace(/==(.*?)==/g, '<mark>$1</mark>');
+        // Replace highlight text
+        processed = processed.replace(/==(.*?)==/g, "<mark>$1</mark>");
 
-      // Replace line breaks
-      processed = processed.replace(/\n/g, '<br>');
+        // Replace line breaks
+        processed = processed.replace(/\n/g, "<br>");
 
-      // Wrap content in paragraphs if not already wrapped
-      if (!/^<[^>]+>/.test(processed)) {
-        processed = `<p>${processed}</p>`;
+        // Wrap content in paragraphs if not already wrapped
+        if (!/^<[^>]+>/.test(processed)) {
+          processed = `<p>${processed}</p>`;
+        }
+
+        return processed;
       }
-
-      return processed;
-    }
-  }).join('');
+    })
+    .join("");
 
   return html;
 };
 
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '');
+  // Function to preserve code blocks
+  const preserveCodeBlocks = (text: string) => {
+    const codeBlocks: string[] = [];
+    const preservedText = text.replace(
+      /<pre><code[\s\S]*?<\/code><\/pre>/g,
+      (match) => {
+        codeBlocks.push(match);
+        return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
+      }
+    );
+    return { preservedText, codeBlocks };
+  };
+
+  // Preserve code blocks
+  const { preservedText, codeBlocks } = preserveCodeBlocks(html);
+
+  // Strip HTML tags
+  let stripped = preservedText.replace(/<[^>]*>/g, "");
+
+  // Decode HTML entities
+  stripped = stripped
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'");
+
+  // Restore code blocks
+  stripped = stripped.replace(/__CODE_BLOCK_(\d+)__/g, (_, index) => {
+    const codeBlock = codeBlocks[parseInt(index)];
+    // Extract the code content from the code block
+    const codeContent =
+      codeBlock.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1] || "";
+    return `\nCode:\n${codeContent}\n`;
+  });
+
+  // Remove extra whitespace
+  stripped = stripped.replace(/\s+/g, " ").trim();
+
+  return stripped;
 }

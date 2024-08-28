@@ -16,6 +16,9 @@ const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params._id });
   const { userId: clerkId } = auth();
 
+  const questionsPage = Number(searchParams.questionsPage) || 1;
+  const answersPage = Number(searchParams.answersPage) || 1;
+
   return (
     <>
       <div className="flex justify-between max-sm:grid max-sm:place-content-center max-sm:gap-4">
@@ -102,6 +105,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
+              pageNumber={questionsPage}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
@@ -109,6 +113,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
+              pageNumber={answersPage}
             />
           </TabsContent>
         </Tabs>

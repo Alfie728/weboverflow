@@ -1,21 +1,20 @@
 import { getUserQuestions } from "@/lib/actions/user.action";
-import { SearchParamsProps } from "@/types";
 import QuestionCard from "../cards/QuestionCard";
 import Pagination from "./Pagination";
-import { USERS_PAGE_SIZE } from "@/constants";
+import { QUESTIONS_PAGE_SIZE } from "@/constants";
 
-interface Props extends SearchParamsProps {
+interface QuestionTabProps {
+  searchParams: { [key: string]: string | undefined };
   userId: string;
   clerkId?: string | null;
+  pageNumber: number;
 }
 
-const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
+const QuestionTab = async ({ searchParams, userId, clerkId, pageNumber }: QuestionTabProps) => {
   const result = await getUserQuestions({
     userId,
-    page: searchParams.page ? +searchParams.page : 1,
+    page: pageNumber,
   });
-
-  const totalPages = Math.ceil(result.totalQuestions / USERS_PAGE_SIZE);
 
   return (
     <>
@@ -34,13 +33,12 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
         />
       ))}
 
-      <div className="mt-10">
-        <Pagination
-          pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={result.isNextQuestions}
-          totalPages={totalPages}
-        />
-      </div>
+      <Pagination
+        pageNumber={pageNumber}
+        isNext={result.isNextQuestions}
+        totalPages={Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE)}
+        tabName="questions"
+      />
     </>
   );
 };
