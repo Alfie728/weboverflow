@@ -7,6 +7,7 @@ import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
 import Pagination from "./Pagination";
+import { ANSWERS_PAGE_SIZE } from "@/constants";
 
 interface Props {
   questionId: string;
@@ -28,6 +29,8 @@ const AllAnswers = async ({
     page: page ? +page : 1,
     sortBy: filter,
   });
+
+  const totalPages = Math.ceil(totalAnswers / ANSWERS_PAGE_SIZE);
 
   return (
     <div className="mt-11">
@@ -79,7 +82,11 @@ const AllAnswers = async ({
         ))}
       </div>
       <div className="mt-10">
-        <Pagination pageNumber={page ? +page : 1} isNext={result.isNext} />
+        <Pagination
+          pageNumber={page ? +page : 1}
+          isNext={result.isNext}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

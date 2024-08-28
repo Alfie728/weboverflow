@@ -16,12 +16,18 @@ import {
 import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
+import { QUESTIONS_PAGE_SIZE } from "@/constants";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter, page = 1, pageSize = 20 } = params;
+    const {
+      searchQuery,
+      filter,
+      page = 1,
+      pageSize = QUESTIONS_PAGE_SIZE,
+    } = params;
 
     // Calculate the number of posts to skip based on the page number and page size
     const skipAmount = (page - 1) * pageSize;
@@ -66,7 +72,7 @@ export async function getQuestions(params: GetQuestionsParams) {
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
 
-    return { questions, isNext };
+    return { questions, isNext, totalQuestions };
   } catch (error) {
     console.log(error);
     throw error;

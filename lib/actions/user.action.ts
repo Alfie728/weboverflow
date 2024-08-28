@@ -19,6 +19,7 @@ import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import { BadgeCriteriaType } from "@/types";
 import { assignBadges } from "../utils";
+import { ANSWERS_PAGE_SIZE, USERS_PAGE_SIZE } from "@/constants";
 
 export async function getUserById(params: GetUserByIdParams) {
   try {
@@ -101,7 +102,12 @@ export async function getAllUsers(params: GetAllUsersParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter, page = 1, pageSize = 20 } = params;
+    const {
+      searchQuery,
+      filter,
+      page = 1,
+      pageSize = USERS_PAGE_SIZE,
+    } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof User> = {};
@@ -136,7 +142,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
       .limit(pageSize);
     const totalUsers = await User.countDocuments(query);
     const isNext = totalUsers > skipAmount + users.length;
-    return { users, isNext };
+    return { users, isNext, totalUsers };
   } catch (error) {
     console.log(error);
     throw error;
@@ -237,8 +243,9 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
     }
 
     const savedQuestions = user.saved;
+    const totalQuestions = user.saved.length;
 
-    return { questions: savedQuestions, isNext };
+    return { questions: savedQuestions, isNext, totalQuestions };
   } catch (error) {
     console.log(error);
     throw error;
@@ -358,11 +365,12 @@ export async function getUserQuestions(params: GetUserStatsParams) {
     throw error;
   }
 }
+
 export async function getUserAnswers(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 8 } = params;
+    const { userId, page = 1, pageSize = ANSWERS_PAGE_SIZE } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const totalAnswers = await Answer.countDocuments({

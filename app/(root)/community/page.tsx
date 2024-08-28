@@ -6,6 +6,7 @@ import Link from "next/link";
 import UserCard from "@/components/cards/UserCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import { USERS_PAGE_SIZE } from "@/constants";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllUsers({
@@ -13,7 +14,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-  // console.log(result.users);
+
+  const totalPages = Math.ceil(result.totalUsers / USERS_PAGE_SIZE);
+
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
@@ -47,6 +50,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
+          totalPages={totalPages}
         />
       </div>
     </>

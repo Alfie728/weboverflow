@@ -2,6 +2,7 @@ import { getUserQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import QuestionCard from "../cards/QuestionCard";
 import Pagination from "./Pagination";
+import { USERS_PAGE_SIZE } from "@/constants";
 
 interface Props extends SearchParamsProps {
   userId: string;
@@ -13,6 +14,8 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
     userId,
     page: searchParams.page ? +searchParams.page : 1,
   });
+
+  const totalPages = Math.ceil(result.totalQuestions / USERS_PAGE_SIZE);
 
   return (
     <>
@@ -35,6 +38,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNextQuestions}
+          totalPages={totalPages}
         />
       </div>
     </>

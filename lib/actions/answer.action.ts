@@ -12,6 +12,7 @@ import {
 import Question from "@/database/question.model";
 import Interaction from "@/database/interaction.model";
 import User from "@/database/user.model";
+import { ANSWERS_PAGE_SIZE } from "@/constants";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -55,7 +56,12 @@ export async function getAnswers(params: GetAnswersParams) {
   try {
     connectToDatabase();
 
-    const { questionId, sortBy, page = 1, pageSize = 5 } = params;
+    const {
+      questionId,
+      sortBy,
+      page = 1,
+      pageSize = ANSWERS_PAGE_SIZE,
+    } = params;
     const skipAmount = (page - 1) * pageSize;
 
     let sortOptions = {};
@@ -64,20 +70,15 @@ export async function getAnswers(params: GetAnswersParams) {
       case "highestUpvotes":
         sortOptions = { upvotes: -1 };
         break;
-
       case "lowestUpvotes":
-        sortOptions = {
-          upvotes: 1,
-        };
+        sortOptions = { upvotes: 1 };
         break;
-
       case "recent":
         sortOptions = { createdAt: -1 };
         break;
       case "old":
         sortOptions = { createdAt: 1 };
         break;
-
       default:
         break;
     }
@@ -91,7 +92,7 @@ export async function getAnswers(params: GetAnswersParams) {
     const totalAnswers = await Answer.countDocuments({ question: questionId });
     const isNext = totalAnswers > skipAmount + answers.length;
 
-    return { answers, isNext };
+    return { answers, isNext, totalAnswers };
   } catch (error) {
     console.log(error);
     throw error;
