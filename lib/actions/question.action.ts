@@ -233,13 +233,27 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
 
     const { questionId, path } = params;
 
+    // Find the question to be deleted
+    const question = await Question.findById(questionId);
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    // Delete the question
     await Question.deleteOne({ _id: questionId });
-    await Answer.deleteMany({ quesiton: questionId });
+
+    // Delete associated answers
+    await Answer.deleteMany({ question: questionId });
+
+    // Delete associated interactions
     await Interaction.deleteMany({ question: questionId });
+
+    // Remove the question from tags
     await Tag.updateMany(
-      { question: questionId },
+      { questions: questionId },
       { $pull: { questions: questionId } }
     );
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);

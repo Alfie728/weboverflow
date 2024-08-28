@@ -120,3 +120,59 @@ export const assignBadges = (params: BadgeParam) => {
 
   return badgeCounts;
 };
+
+export const convertMarkdownToHTML = (markdown: string) => {
+  // Function to escape HTML
+  const escapeHTML = (text: string) => {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+
+  // Split the markdown into code blocks and non-code parts
+  const parts = markdown.split(/(```[\s\S]*?```)/);
+
+  const html = parts.map((part, index) => {
+    if (part.startsWith('```') && part.endsWith('```')) {
+      // Handle code blocks
+      const [, lang, code] = part.match(/```(\w+)?\n([\s\S]*?)```/) || [];
+      return `<pre><code class="language-${lang || "plaintext"}">${escapeHTML(code?.trim() ?? '')}</code></pre>`;
+    } else {
+      // Handle non-code parts
+      let processed = part;
+
+      // Replace inline code
+      processed = processed.replace(/`([^`]+)`/g, (_, code) => `<code>${escapeHTML(code)}</code>`);
+
+      // Replace headings
+      processed = processed.replace(/^(#{1,6})\s(.*)$/gm, (_, hashes, content) => {
+        const level = hashes.length;
+        return `<h${level}>${content.trim()}</h${level}>`;
+      });
+
+      // Replace bold text
+      processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+      // Replace italic text
+      processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+      // Replace highlight text
+      processed = processed.replace(/==(.*?)==/g, '<mark>$1</mark>');
+
+      // Replace line breaks
+      processed = processed.replace(/\n/g, '<br>');
+
+      // Wrap content in paragraphs if not already wrapped
+      if (!/^<[^>]+>/.test(processed)) {
+        processed = `<p>${processed}</p>`;
+      }
+
+      return processed;
+    }
+  }).join('');
+
+  return html;
+};

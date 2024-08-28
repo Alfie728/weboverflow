@@ -88,7 +88,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
   try {
     await connectToDatabase();
 
-    const { tagId, page = 1, pageSize = 1, searchQuery } = params;
+    const { tagId, page = 1, pageSize = 8, searchQuery } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const tagFilter: FilterQuery<ITag> = { _id: tagId };

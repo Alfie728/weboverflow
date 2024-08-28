@@ -182,7 +182,7 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { clerkId, searchQuery, filter, page = 1, pageSize = 1 } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 8 } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = searchQuery
@@ -362,7 +362,7 @@ export async function getUserAnswers(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 10 } = params;
+    const { userId, page = 1, pageSize = 8 } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const totalAnswers = await Answer.countDocuments({
@@ -370,7 +370,7 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     });
 
     const userAnswers = await Answer.find({ author: userId })
-      .sort({ upvotes: -1 })
+      .sort({ createdAt: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
       .populate("question", "_id title")
