@@ -1,3 +1,4 @@
+import ClientTabsTrigger from "@/components/ClientTabsTrigger";
 import AnswerTab from "@/components/shared/AnswerTab";
 import ProfileLink from "@/components/shared/ProfileLink";
 import QuestionTab from "@/components/shared/QuestionTab";
@@ -8,7 +9,7 @@ import { getJoinedDate } from "@/lib/utils";
 import { URLProps } from "@/types";
 import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { Tabs, TabsContent, TabsList } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import Link from "next/link";
 const page = async ({ params, searchParams }: URLProps) => {
@@ -17,6 +18,7 @@ const page = async ({ params, searchParams }: URLProps) => {
 
   const questionsPage = Number(searchParams.questionsPage) || 1;
   const answersPage = Number(searchParams.answersPage) || 1;
+  const activeTab = searchParams.tab || "top-posts";
 
   return (
     <>
@@ -84,20 +86,24 @@ const page = async ({ params, searchParams }: URLProps) => {
         badges={userInfo.badgeCounts}
       />
       <div className="mt-10 flex gap-10">
-        <Tabs defaultValue="top-posts" className="flex-1">
+        <Tabs defaultValue={activeTab} className="flex-1">
           <TabsList className="background-light800_dark400 mb-6 inline-flex h-9 min-h-[42px] items-center justify-center rounded-lg bg-slate-100 p-1 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-            <TabsTrigger
+            <ClientTabsTrigger
               value="top-posts"
-              className="tab inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-slate-950 data-[state=active]:shadow dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50"
-            >
-              Top Posts
-            </TabsTrigger>
-            <TabsTrigger
+              label="Top Posts"
+              userId={params._id}
+              questionsPage={questionsPage}
+              answersPage={answersPage}
+              isActive={activeTab === "top-posts"}
+            />
+            <ClientTabsTrigger
               value="answers"
-              className="tab inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-slate-950 data-[state=active]:shadow dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 dark:data-[state=active]:bg-slate-950 dark:data-[state=active]:text-slate-50"
-            >
-              Answers
-            </TabsTrigger>
+              label="Answers"
+              userId={params._id}
+              questionsPage={questionsPage}
+              answersPage={answersPage}
+              isActive={activeTab === "answers"}
+            />
           </TabsList>
           <TabsContent value="top-posts" className="flex w-full flex-col gap-6">
             <QuestionTab
