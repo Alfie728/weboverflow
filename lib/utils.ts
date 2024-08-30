@@ -220,15 +220,32 @@ export function stripHtml(html: string): string {
   stripped = stripped.replace(/__CODE_BLOCK_(\d+)__/g, (_, index) => {
     const codeBlock = codeBlocks[parseInt(index)];
     // Extract the code content from the code block
-    const codeContent =
-      codeBlock.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1] || "";
-    return `\nCode:\n${codeContent}\n`;
+    const codeContent = codeBlock.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1] || "";
+    // Decode HTML entities in the code content
+    const decodedContent = decodeHTMLEntities(codeContent);
+    return `\nCode:\n${decodedContent}\n`;
   });
 
   // Remove extra whitespace
   stripped = stripped.replace(/\s+/g, " ").trim();
 
   return stripped;
+}
+
+// Helper function to decode HTML entities
+function decodeHTMLEntities(text: string): string {
+  const entities: { [key: string]: string } = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#039;': "'",
+    '&#x27;': "'",
+    '&#x2F;': '/',
+    '&#32;': ' ',
+    '&nbsp;': ' '
+  };
+  return text.replace(/&[#\w]+;/g, (entity) => entities[entity] || entity);
 }
 
 export function range(
