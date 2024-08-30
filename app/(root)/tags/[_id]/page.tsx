@@ -5,7 +5,6 @@ import NoResult from "@/components/shared/NoResult";
 import { URLProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { QUESTIONS_PAGE_SIZE } from "@/constants";
-
 const page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionsByTagId({
     tagId: params._id,

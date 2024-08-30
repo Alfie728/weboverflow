@@ -14,38 +14,27 @@ import { themes } from "@/constants";
 
 const Theme = () => {
   const { setMode } = useTheme();
-  const [selectedTheme, setSelectedTheme] = useState(
-    localStorage.theme || "system"
-  );
+  const [selectedTheme, setSelectedTheme] = useState("system");
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const handleSystemThemeChange = () => {
-      if (selectedTheme === "system") {
-        setMode(mediaQuery.matches ? "dark" : "light");
+    if (typeof window !== "undefined") {
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme) {
+        setSelectedTheme(storedTheme);
       }
-    };
-
-    handleSystemThemeChange();
-    mediaQuery.addEventListener("change", handleSystemThemeChange);
-
-    return () =>
-      mediaQuery.removeEventListener("change", handleSystemThemeChange);
-  }, [selectedTheme, setMode]);
+    }
+  }, []);
 
   const handleThemeChange = (theme: string) => {
     setSelectedTheme(theme);
-    if (theme === "system") {
-      localStorage.removeItem("theme");
-      setMode(
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light"
-      );
-    } else {
-      localStorage.theme = theme;
-      setMode(theme);
+    if (typeof window !== "undefined") {
+      if (theme === "system") {
+        localStorage.removeItem("theme");
+        setMode(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      } else {
+        localStorage.setItem("theme", theme);
+        setMode(theme);
+      }
     }
   };
 

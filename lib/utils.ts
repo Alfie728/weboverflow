@@ -230,3 +230,33 @@ export function stripHtml(html: string): string {
 
   return stripped;
 }
+
+export function range(
+  start: number,
+  stop?: number,
+  step: number = 1
+): number[] {
+  // If only one argument is provided, set start to 0 and stop to the provided value
+  if (stop === undefined) {
+    stop = start;
+    start = 0;
+  }
+
+  // Create an array to hold the range values
+  const result: number[] = [];
+
+  // Handle positive and negative steps
+  if (step > 0) {
+    // Generate values for positive step
+    for (let i = start; i < stop; i += step) {
+      result.push(i);
+    }
+  } else if (step < 0) {
+    // Generate values for negative step
+    for (let i = start; i > stop; i += step) {
+      result.push(i);
+    }
+  }
+
+  return result;
+}

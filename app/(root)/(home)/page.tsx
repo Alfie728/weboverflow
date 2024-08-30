@@ -1,16 +1,14 @@
 import Filter from "@/components/shared/Filter";
 import LocalSearchBar from "@/components/shared/Search/LocalSearchBar";
 import HomeFilters from "@/components/home/HomeFilters";
-import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
-import Link from "next/link";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QUESTIONS_PAGE_SIZE } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-
+import HomepageWrapper from "./HomepageWrapper";
 export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
     searchQuery: searchParams.q,
@@ -21,16 +19,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   const totalPages = Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE);
 
   return (
-    <>
-      <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
-        <h1 className="h1-bold text-dark100_light900">All Questions</h1>
-        <Link href="/ask-question" className="flex justify-end max-sm:w-full">
-          <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900 shadow-sm transition hover:scale-105 hover:shadow-md">
-            Ask a Question
-          </Button>
-        </Link>
-      </div>
-
+    <HomepageWrapper>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
           iconPosition="left"
@@ -80,6 +69,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           totalPages={totalPages}
         />
       </div>
-    </>
+    </HomepageWrapper>
   );
 }

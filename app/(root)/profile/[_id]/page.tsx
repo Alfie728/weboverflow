@@ -11,7 +11,6 @@ import { auth } from "@clerk/nextjs/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import Link from "next/link";
-
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params._id });
   const { userId: clerkId } = auth();

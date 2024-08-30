@@ -8,7 +8,7 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { TAGS_PAGE_SIZE } from "@/constants";
 
-const page = async ({ searchParams }: SearchParamsProps) => {
+const TagsPage = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
@@ -77,4 +77,5 @@ const page = async ({ searchParams }: SearchParamsProps) => {
     </>
   );
 };
-export default page;
+
+export default TagsPage;

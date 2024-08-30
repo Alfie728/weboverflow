@@ -8,6 +8,7 @@ import { auth } from "@clerk/nextjs/server";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { QUESTIONS_PAGE_SIZE } from "@/constants";
+import CollectionPageWrapper from "./CollectionPageWrapper";
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
@@ -23,9 +24,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   const totalPages = Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE);
 
   return (
-    <>
-      <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
-
+    <CollectionPageWrapper>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
           iconPosition="left"
@@ -72,6 +71,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           totalPages={totalPages}
         />
       </div>
-    </>
+    </CollectionPageWrapper>
   );
 }

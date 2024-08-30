@@ -7,6 +7,7 @@ import UserCard from "@/components/cards/UserCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { USERS_PAGE_SIZE } from "@/constants";
+import CommunityPageWrapper from "./CommunityPageWrapper";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllUsers({
@@ -18,9 +19,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   const totalPages = Math.ceil(result.totalUsers / USERS_PAGE_SIZE);
 
   return (
-    <>
-      <h1 className="h1-bold text-dark100_light900">All Users</h1>
-
+    <CommunityPageWrapper>
       <div className="mt-11 flex w-full justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
           iconPosition="left"
@@ -34,7 +33,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <section className="mt-12 grid w-full grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-4">
+      <div className="mt-12 grid w-full grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
@@ -45,7 +44,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
             </Link>
           </div>
         )}
-      </section>
+      </div>
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
@@ -53,7 +52,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           totalPages={totalPages}
         />
       </div>
-    </>
+    </CommunityPageWrapper>
   );
 };
 export default page;
