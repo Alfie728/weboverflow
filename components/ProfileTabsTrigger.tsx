@@ -1,9 +1,7 @@
-"use client";
-
 import { TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 
-interface ClientTabsTriggerProps {
+interface ProfileTabsTriggerProps {
   value: string;
   label: string;
   userId: string;
@@ -12,14 +10,14 @@ interface ClientTabsTriggerProps {
   isActive: boolean;
 }
 
-const ClientTabsTrigger = ({
+const ProfileTabsTrigger = ({
   value,
   label,
   userId,
   questionsPage,
   answersPage,
   isActive,
-}: ClientTabsTriggerProps) => {
+}: ProfileTabsTriggerProps) => {
   return (
     <Link
       href={`/profile/${userId}?tab=${value}&questionsPage=${questionsPage}&answersPage=${answersPage}`}
@@ -39,4 +37,4 @@ const ClientTabsTrigger = ({
   );
 };
 
-export default ClientTabsTrigger;
+export default ProfileTabsTrigger;

@@ -1,4 +1,4 @@
-import ClientTabsTrigger from "@/components/ClientTabsTrigger";
+import ProfileTabsTrigger from "@/components/ProfileTabsTrigger";
 import AnswerTab from "@/components/shared/AnswerTab";
 import ProfileLink from "@/components/shared/ProfileLink";
 import QuestionTab from "@/components/shared/QuestionTab";
@@ -88,7 +88,7 @@ const page = async ({ params, searchParams }: URLProps) => {
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue={activeTab} className="flex-1">
           <TabsList className="background-light800_dark400 mb-6 inline-flex h-9 min-h-[42px] items-center justify-center rounded-lg bg-slate-100 p-1 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-            <ClientTabsTrigger
+            <ProfileTabsTrigger
               value="top-posts"
               label="Top Posts"
               userId={params._id}
@@ -96,7 +96,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               answersPage={answersPage}
               isActive={activeTab === "top-posts"}
             />
-            <ClientTabsTrigger
+            <ProfileTabsTrigger
               value="answers"
               label="Answers"
               userId={params._id}
