@@ -9,6 +9,12 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { QUESTIONS_PAGE_SIZE } from "@/constants";
 import CollectionPageWrapper from "./CollectionPageWrapper";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collection | Web Overflow",
+  description: "Collection page",
+};
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();

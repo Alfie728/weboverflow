@@ -8,6 +8,12 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { USERS_PAGE_SIZE } from "@/constants";
 import CommunityPageWrapper from "./CommunityPageWrapper";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community | Web Overflow",
+  description: "Community page",
+};
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllUsers({

@@ -11,6 +11,12 @@ import Link from "next/link";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
 import { URLProps } from "@/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Question | Web Overflow",
+  description: "Question page",
+};
 
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();

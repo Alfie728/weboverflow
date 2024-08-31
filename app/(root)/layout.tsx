@@ -3,6 +3,13 @@ import LeftSidebar from "@/components/shared/Sidebar/LeftSidebar";
 import RightSidebar from "@/components/shared/Sidebar/RightSidebar";
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Web Overflow",
+  description:
+    "Web Overflow is a platform for web developers to ask questions and get help from the community.",
+};
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

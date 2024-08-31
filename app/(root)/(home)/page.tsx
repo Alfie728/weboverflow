@@ -9,6 +9,13 @@ import { QUESTIONS_PAGE_SIZE } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import HomepageWrapper from "./HomepageWrapper";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | Web Overflow",
+  description: "Home page",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
     searchQuery: searchParams.q,

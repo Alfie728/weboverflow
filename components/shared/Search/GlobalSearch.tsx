@@ -16,7 +16,7 @@ const GlobalSearch = () => {
 
   return (
     <div
-      className="relative ml-6 w-full max-w-[600px] max-lg:hidden"
+      className="relative ml-6 w-[calc(100%-40vw)] max-w-[600px] max-lg:hidden"
       ref={modalRef}
     >
       <div className="background-light800_dark300 relative flex min-h-[56px] grow items-center gap-1 rounded-xl px-4">
