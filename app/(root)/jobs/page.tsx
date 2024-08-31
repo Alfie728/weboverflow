@@ -1,5 +1,5 @@
 import JobList from "@/components/JobList";
-import { fetchCountries, fetchJobs } from "@/lib/actions/jobs.action";
+import { fetchCountries  } from "@/lib/actions/jobs.action";
 import Filter from "@/components/shared/Filter";
 import Pagination from "@/components/shared/Pagination";
 import { JOBS_PAGE_SIZE } from "@/constants";
