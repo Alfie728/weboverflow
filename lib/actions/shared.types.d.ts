@@ -157,3 +157,32 @@ export interface GetUserStatsParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export interface Job {
+  job_id: string;
+  job_title: string;
+  job_apply_link: string;
+  employer_name: string;
+  job_country: string;
+  job_city: string;
+  job_employment_type: string;
+  job_min_salary: number;
+  job_max_salary: number;
+  employer_logo: string;
+  // Add other job properties as needed
+}
+
+export interface JobListProps {
+  jobs: Job[] | undefined;
+}
+
+export interface Country {
+  name: { common: string };
+  cca2?: string;
+}
+
+export interface CountryFilterProps {
+  countries: string[];
+  onFilter: (country: string) => void;
+  initialValue?: string;
+}
