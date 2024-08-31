@@ -21,6 +21,7 @@ import Image from "next/image";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   type?: string;
@@ -67,6 +68,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           path: pathname,
         });
         router.push(`/question/${parsedQuestionDetails._id}`);
+        return toast({
+          title: "Question Updated",
+          description: "You have successfully updated this question!",
+          variant: "default",
+        });
       } else {
         // make an async call to API
         // contain all form data
@@ -77,11 +83,16 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           author: JSON.parse(mongoUserId),
           path: pathname,
         });
+        // navigate to home page
+        router.push("/");
+        return toast({
+          title: "Question Created",
+          description: "You have successfully created this question!",
+          variant: "default",
+        });
       }
-
-      // navigate to home page
-      router.push("/");
     } catch (error) {
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }

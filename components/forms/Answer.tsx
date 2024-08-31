@@ -19,6 +19,7 @@ import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
 import { convertMarkdownToHTML } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   question: string;
@@ -56,6 +57,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
         editor.setContent("");
       }
+
+      return toast({
+        title: "Answer Created",
+        description: "You have successfully created this answer!",
+        variant: "default",
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -95,7 +102,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       setIsSubmittingAI(false);
     }
   };
-  
+
   return (
     <div>
       <div className="mt-8 flex flex-col items-baseline justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">

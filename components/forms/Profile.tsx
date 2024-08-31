@@ -18,6 +18,7 @@ import { useState } from "react";
 import { ProfileSchema } from "@/lib/validation";
 import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.action";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   clerkId: string;
@@ -71,8 +72,13 @@ const Profile = ({ clerkId, user }: Props) => {
     } finally {
       setIsSubmitting(false);
     }
+    return toast({
+      title: "Profile Updated",
+      description: "You have successfully updated your profile!",
+      variant: "default",
+    });
 
-    console.log(values);
+    // console.log(values);
   };
   return (
     <Form {...form}>
@@ -172,7 +178,7 @@ const Profile = ({ clerkId, user }: Props) => {
         />
         <Button
           type="submit"
-          className="primary-gradient  mt-7 flex w-fit self-end"
+          className="primary-gradient  mt-7 flex w-fit self-end text-light-900"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving" : "Save"}

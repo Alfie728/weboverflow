@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { useEffect } from "react";
 import { viewQuestion } from "@/lib/actions/interaction.action";
+import { toast } from "@/hooks/use-toast";
 
 interface Props {
   type: string;
@@ -33,8 +34,8 @@ const Votes = ({
   hasDownVoted,
   hasSaved,
 }: Props) => {
-  const cleanItemId = itemId.replace(/^"|"$/g, '');
-  const cleanUserId = userId ? userId.replace(/^"|"$/g, '') : '';
+  const cleanItemId = itemId.replace(/^"|"$/g, "");
+  const cleanUserId = userId ? userId.replace(/^"|"$/g, "") : "";
   const pathname = usePathname();
   const router = useRouter();
 
@@ -44,11 +45,22 @@ const Votes = ({
       questionId: cleanItemId,
       path: pathname,
     });
+    return toast({
+      title: `Question ${!hasSaved ? "Saved" : "Removed"}`,
+      description: !hasSaved
+        ? "You have successfully saved this question!"
+        : "You have successfully removed your saved question!",
+      variant: !hasSaved ? "default" : "destructive",
+    });
   };
 
   const handleVote = async (action: string) => {
     if (!cleanUserId) {
-      return;
+      return toast({
+        title: "Please Login",
+        description: "You need to login to continue!",
+        variant: "destructive",
+      });
     }
 
     if (action === "upvote") {
@@ -72,7 +84,13 @@ const Votes = ({
 
       // TODO: show a toast
 
-      return;
+      return toast({
+        title: `Upvote ${!hasUpVoted ? "Successful" : "Removed"}`,
+        description: !hasUpVoted
+          ? "You have successfully upvoted!"
+          : "You have successfully removed your upvote!",
+        variant: !hasUpVoted ? "default" : "destructive",
+      });
     }
     if (action === "downvote") {
       if (type === "Question") {
@@ -94,6 +112,13 @@ const Votes = ({
       }
 
       // TODO: show a toast
+      return toast({
+        title: `Downvote ${!hasDownVoted ? "Successful" : "Removed"}`,
+        description: !hasDownVoted
+          ? "You have successfully downvoted!"
+          : "You have successfully removed your downvote!",
+        variant: !hasDownVoted ? "default" : "destructive",
+      });
     }
   };
 
