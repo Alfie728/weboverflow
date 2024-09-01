@@ -91,8 +91,8 @@ export async function getAnswers(params: GetAnswersParams) {
 
     const totalAnswers = await Answer.countDocuments({ question: questionId });
     const isNext = totalAnswers > skipAmount + answers.length;
-
-    return { answers, isNext, totalAnswers };
+    const totalPages = Math.ceil(totalAnswers / pageSize);
+    return { answers, isNext, totalAnswers, totalPages };
   } catch (error) {
     console.log(error);
     throw error;

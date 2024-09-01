@@ -20,31 +20,34 @@ export default function JobList({ jobs }: JobListProps) {
       {jobs.map((job) => (
         <div
           key={job.job_id}
-          className="card-wrapper rounded-[10px] border p-9 shadow-lg transition-transform hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:shadow-light-100 dark:hover:bg-dark-400 dark:hover:shadow-light-200 sm:px-11"
+          className="card-wrapper rounded-[10px] border p-6 shadow-lg transition-transform hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:shadow-light-100 dark:hover:bg-dark-400 dark:hover:shadow-light-200 sm:p-8"
         >
-          <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
-            <div>
-              <span className="text-dark400_light700 line-clamp-1 flex items-baseline">
-                {job.employer_name}
-              </span>
-              <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
-                {job.job_title}
-              </h3>
-            </div>
-            <Link href={job.job_apply_link} className="flex justify-end">
-              <div className="background-light700_dark400 flex size-[56px] items-center justify-center rounded-full">
+          <div className="flex items-center gap-4">
+            <Link href={job.job_apply_link} className="shrink-0">
+              <div className="background-light700_dark400 flex size-[80px] items-center justify-center rounded-full">
                 <Image
                   src={job.employer_logo || "/assets/icons/account.svg"}
                   alt={job.employer_name}
-                  width={32}
-                  height={32}
+                  width={60}
+                  height={60}
                   className="object-contain"
                 />
               </div>
             </Link>
+            <div className="grow">
+              <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1">
+                {job.job_title}
+              </h3>
+              <span className="text-dark400_light700 mt-2 line-clamp-1 text-sm ">
+                {job.employer_name}
+              </span>
+            </div>
           </div>
+          <p className="text-dark400_light700 mt-4 line-clamp-2 text-sm">
+            {job.job_description}
+          </p>
 
-          <div className="mt-1 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <FiMapPin className="text-light400_light500" />
               <p className="body-medium text-light400_light500">
@@ -57,7 +60,7 @@ export default function JobList({ jobs }: JobListProps) {
                 {job.job_employment_type}
               </p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               <FiDollarSign className="text-light400_light500" />
               <p className="body-medium text-light400_light500">
                 {formatSalary(job.job_min_salary, job.job_max_salary)}
@@ -67,7 +70,7 @@ export default function JobList({ jobs }: JobListProps) {
 
           <Link
             href={job.job_apply_link}
-            className="flex-center body-medium mt-6 w-fit text-primary-500"
+            className="flex-center body-medium  mt-4 w-fit rounded-md bg-primary-500 px-4 py-2 text-white"
           >
             Apply Now
           </Link>

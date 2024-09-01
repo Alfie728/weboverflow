@@ -161,6 +161,7 @@ export interface DeleteUserParams {
 export interface Job {
   job_id: string;
   job_title: string;
+  job_description: string;
   job_apply_link: string;
   employer_name: string;
   job_country: string;

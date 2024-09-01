@@ -8,7 +8,6 @@ import {
   getQuestions,
   getRecommendedQuestions,
 } from "@/lib/actions/question.action";
-import { QUESTIONS_PAGE_SIZE } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import HomepageWrapper from "./HomepageWrapper";
@@ -35,6 +34,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         questions: [],
         isNext: false,
         totalQuestions: 0,
+        totalPages: 0,
       };
     }
   } else {
@@ -44,8 +44,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       page: searchParams.page ? +searchParams.page : 1,
     });
   }
-
-  const totalPages = Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE);
 
   return (
     <HomepageWrapper>
@@ -95,7 +93,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
-          totalPages={totalPages}
+          totalPages={result.totalPages}
         />
       </div>
     </HomepageWrapper>

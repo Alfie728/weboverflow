@@ -78,7 +78,8 @@ export async function getAllTags(params: GetAllTagsParams) {
 
     const totalTags = await Tag.countDocuments(query);
     const isNext = totalTags > skipAmount + tags.length;
-    return { tags, isNext, totalTags };
+    const totalPages = Math.ceil(totalTags / pageSize);
+    return { tags, isNext, totalTags, totalPages };
   } catch (error) {
     console.log(error);
     throw error;
@@ -126,12 +127,13 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     const isNext = tag.questions.length > pageSize;
     const questions = tag.questions.slice(0, pageSize);
-
+    const totalPages = Math.ceil(tag.questions.length / pageSize);
     return {
       tagTitle: tag.name,
       questions,
       isNext,
       totalQuestions: tag.questions.length,
+      totalPages,
     };
   } catch (error) {
     console.log(error);

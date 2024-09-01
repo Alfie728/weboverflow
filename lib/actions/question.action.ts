@@ -48,17 +48,12 @@ export async function getQuestions(params: GetQuestionsParams) {
       case "newest":
         sortOptions = { createdAt: -1 };
         break;
-
       case "frequent":
-        sortOptions = {
-          views: -1,
-        };
+        sortOptions = { views: -1 };
         break;
-
       case "unanswered":
         query.answers = { $size: 0 };
         break;
-
       default:
         break;
     }
@@ -72,8 +67,9 @@ export async function getQuestions(params: GetQuestionsParams) {
 
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
+    const totalPages = Math.ceil(totalQuestions / pageSize);
 
-    return { questions, isNext, totalQuestions };
+    return { questions, isNext, totalQuestions, totalPages };
   } catch (error) {
     console.log(error);
     throw error;
@@ -311,7 +307,12 @@ export async function getRecommendedQuestions(params: RecommendedParams) {
   try {
     await connectToDatabase();
 
-    const { userId, page = 1, pageSize = QUESTIONS_PAGE_SIZE, searchQuery } = params;
+    const {
+      userId,
+      page = 1,
+      pageSize = QUESTIONS_PAGE_SIZE,
+      searchQuery,
+    } = params;
 
     // find user
     const user = await User.findOne({ clerkId: userId });
@@ -370,8 +371,13 @@ export async function getRecommendedQuestions(params: RecommendedParams) {
       .limit(pageSize);
 
     const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
-
-    return { questions: recommendedQuestions, isNext, totalQuestions };
+    const totalPages = Math.ceil(totalQuestions / pageSize);
+    return {
+      questions: recommendedQuestions,
+      isNext,
+      totalQuestions,
+      totalPages,
+    };
   } catch (error) {
     console.error("Error getting recommended questions:", error);
     throw error;

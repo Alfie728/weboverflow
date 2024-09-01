@@ -146,7 +146,8 @@ export async function getAllUsers(params: GetAllUsersParams) {
       .limit(pageSize);
     const totalUsers = await User.countDocuments(query);
     const isNext = totalUsers > skipAmount + users.length;
-    return { users, isNext, totalUsers };
+    const totalPages = Math.ceil(totalUsers / pageSize);
+    return { users, isNext, totalUsers, totalPages };
   } catch (error) {
     console.log(error);
     throw error;
@@ -248,8 +249,9 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
 
     const savedQuestions = user.saved;
     const totalQuestions = user.saved.length;
+    const totalPages = Math.ceil(totalQuestions / pageSize);
 
-    return { questions: savedQuestions, isNext, totalQuestions };
+    return { questions: savedQuestions, isNext, totalQuestions, totalPages };
   } catch (error) {
     console.log(error);
     throw error;
@@ -362,8 +364,13 @@ export async function getUserQuestions(params: GetUserStatsParams) {
       .populate("author", "_id clerkId username name picture");
 
     const isNextQuestions = totalQuestions > skipAmount + userQuestions.length;
-
-    return { totalQuestions, questions: userQuestions, isNextQuestions };
+    const totalPages = Math.ceil(totalQuestions / pageSize);
+    return {
+      totalQuestions,
+      questions: userQuestions,
+      isNextQuestions,
+      totalPages,
+    };
   } catch (error) {
     console.log(error);
     throw error;
