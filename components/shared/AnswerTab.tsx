@@ -7,6 +7,7 @@ interface AnswerTabProps {
   userId: string;
   clerkId?: string | null;
   pageNumber: number;
+  searchQuery?: string;
 }
 
 const AnswerTab = async ({
@@ -14,10 +15,12 @@ const AnswerTab = async ({
   userId,
   clerkId,
   pageNumber,
+  searchQuery,
 }: AnswerTabProps) => {
   const result = await getUserAnswers({
     userId,
     page: pageNumber,
+    searchQuery,
   });
 
   return (

@@ -78,7 +78,7 @@ export const BADGE_CRITERIA = {
 };
 
 export const ANSWERS_PAGE_SIZE = 5;
-export const QUESTIONS_PAGE_SIZE = 10;
+export const QUESTIONS_PAGE_SIZE = 5;
 export const USERS_PAGE_SIZE = 12;
 export const TAGS_PAGE_SIZE = 12;
 export const JOBS_PAGE_SIZE = 5;

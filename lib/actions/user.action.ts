@@ -349,14 +349,17 @@ export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = QUESTIONS_PAGE_SIZE } = params;
+    const { userId, page = 1, pageSize = QUESTIONS_PAGE_SIZE, searchQuery } = params;
     const skipAmount = (page - 1) * pageSize;
 
-    const totalQuestions = await Question.countDocuments({
+    const query = {
       author: userId,
-    });
+      ...(searchQuery ? { title: { $regex: new RegExp(searchQuery, "i") } } : {}),
+    };
 
-    const userQuestions = await Question.find({ author: userId })
+    const totalQuestions = await Question.countDocuments(query);
+
+    const userQuestions = await Question.find(query)
       .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
@@ -381,14 +384,20 @@ export async function getUserAnswers(params: GetUserStatsParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = ANSWERS_PAGE_SIZE } = params;
+    const { userId, page = 1, pageSize = ANSWERS_PAGE_SIZE, searchQuery } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const totalAnswers = await Answer.countDocuments({
       author: userId,
+      ...(searchQuery ? { content: { $regex: new RegExp(searchQuery, "i") } } : {}),
     });
 
-    const userAnswers = await Answer.find({ author: userId })
+    const query = {
+      author: userId,
+      ...(searchQuery ? { content: { $regex: new RegExp(searchQuery, "i") } } : {}),
+    };
+
+    const userAnswers = await Answer.find(query)
       .sort({ createdAt: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
