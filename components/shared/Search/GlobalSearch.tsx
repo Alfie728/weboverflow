@@ -3,16 +3,13 @@
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import GlobalResult from "./GlobalResult";
-import useDebounce from "@/hooks/useDebounce";
 import useGlobalSearchModal from "@/hooks/useGlobalSearchModal";
-import { useState, LegacyRef } from "react";
+import useSearch from "@/hooks/useSearch";
 
 const GlobalSearch = () => {
   const { isOpen, openModal, closeModal, toggleModal, modalRef, triggerRef } =
     useGlobalSearchModal();
-  const [search, setSearch] = useState("");
-
-  useDebounce(search, 500, "global");
+  const { search, setSearch } = useSearch({ searchParamName: "global" });
 
   return (
     <div
@@ -29,7 +26,7 @@ const GlobalSearch = () => {
           onClick={toggleModal}
         />
         <Input
-          ref={triggerRef as LegacyRef<HTMLInputElement>}
+          ref={triggerRef}
           type="text"
           placeholder="Search globally"
           value={search}

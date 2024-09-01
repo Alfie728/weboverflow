@@ -1,13 +1,13 @@
 import { getUserAnswers } from "@/lib/actions/user.action";
 import AnswerCard from "../cards/AnswerCard";
 import Pagination from "./Pagination";
-import { ANSWERS_PAGE_SIZE } from "@/constants";
 
 interface AnswerTabProps {
   searchParams: { [key: string]: string | undefined };
   userId: string;
   clerkId?: string | null;
   pageNumber: number;
+  searchQuery?: string;
 }
 
 const AnswerTab = async ({
@@ -15,10 +15,12 @@ const AnswerTab = async ({
   userId,
   clerkId,
   pageNumber,
+  searchQuery,
 }: AnswerTabProps) => {
   const result = await getUserAnswers({
     userId,
     page: pageNumber,
+    searchQuery,
   });
 
   return (
@@ -38,7 +40,7 @@ const AnswerTab = async ({
       <Pagination
         pageNumber={pageNumber}
         isNext={result.isNextAnswers}
-        totalPages={Math.ceil(result.totalAnswers / ANSWERS_PAGE_SIZE)}
+        totalPages={result.totalPages}
         tabName="answers"
       />
     </>

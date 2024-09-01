@@ -18,9 +18,17 @@ interface Props {
   }[];
   otherClasses?: string;
   containerClasses?: string;
+  placeholder?: string;
+  filterKey?: string;
 }
 
-const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
+const Filter = ({
+  filters,
+  otherClasses,
+  containerClasses,
+  placeholder,
+  filterKey,
+}: Props) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -29,7 +37,7 @@ const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
   const handleUpdateParams = (value: string) => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
-      key: "filter",
+      key: filterKey || "filter",
       value,
     });
 
@@ -46,16 +54,16 @@ const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
           className={`${otherClasses} body-regular light-border background-light800_dark300 text-dark500_light700 w-[180px] border px-5 py-2.5`}
         >
           <div className="line-clamp-1 flex-1 text-left">
-            <SelectValue placeholder="Select a Filter" />
+            <SelectValue placeholder={placeholder || "Select a Filter"} />
           </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="background-light800_dark300 text-dark500_light700">
           <SelectGroup className="background-light800_dark300">
             <SelectItem
               value="none"
               className="text-dark500_light700 focus:bg-light-700 dark:focus:bg-dark-400"
             >
-              No Filter
+              {placeholder || "No Filter"}
             </SelectItem>
             {filters.map((item) => (
               <SelectItem

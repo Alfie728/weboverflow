@@ -13,25 +13,29 @@ const useGlobalSearchModal = ({
 }: UseGlobalSearchModalProps = {}) => {
   const [isOpen, setIsOpen] = useState(initialState);
   const modalRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLInputElement>(null);
 
   const openModal = useCallback(() => {
     setIsOpen(true);
     onOpen?.();
+    // Focus the input field when opening the modal
+    setTimeout(() => triggerRef.current?.focus(), 0);
   }, [onOpen]);
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
     onClose?.();
+    // Blur the input field when closing the modal
+    triggerRef.current?.blur();
   }, [onClose]);
 
   const toggleModal = useCallback(() => {
-    setIsOpen((prev) => {
-      const newState = !prev;
-      newState ? onOpen?.() : onClose?.();
-      return newState;
-    });
-  }, [onOpen, onClose]);
+    if (isOpen) {
+      closeModal();
+    } else {
+      openModal();
+    }
+  }, [isOpen, openModal, closeModal]);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -56,7 +60,7 @@ const useGlobalSearchModal = ({
 
   const handleCommandK = useCallback(
     (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+      if (event.metaKey && event.key === "k") {
         event.preventDefault();
         toggleModal();
       }

@@ -2,9 +2,7 @@
 
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import useDebounce from "@/hooks/useDebounce";
+import useSearch from "@/hooks/useSearch";
 
 interface CustomInputProps {
   iconPosition: string;
@@ -19,13 +17,7 @@ const LocalSearchBar = ({
   placeholder,
   otherClasses,
 }: CustomInputProps) => {
-  const searchParams = useSearchParams();
-
-  const query = searchParams.get("q");
-
-  const [search, setSearch] = useState(query || "");
-
-  useDebounce(search, 500, "q");
+  const { search, setSearch } = useSearch({ searchParamName: "q" });
 
   return (
     <div

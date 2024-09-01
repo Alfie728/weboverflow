@@ -12,13 +12,20 @@ import { auth } from "@clerk/nextjs/server";
 import { Tabs, TabsContent, TabsList } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import Link from "next/link";
+import LocalSearchBar from "@/components/shared/Search/LocalSearchBar";
+
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params._id });
   const { userId: clerkId } = auth();
 
-  const questionsPage = Number(searchParams.questionsPage) || 1;
-  const answersPage = Number(searchParams.answersPage) || 1;
+  const questionsPage = searchParams.q 
+    ? 1 
+    : Number(searchParams.questionsPage) || 1;
+  const answersPage = searchParams.q
+    ? 1
+    : Number(searchParams.answersPage) || 1;
   const activeTab = searchParams.tab || "top-posts";
+  const searchQuery = searchParams.q || "";
 
   return (
     <>
@@ -85,7 +92,14 @@ const page = async ({ params, searchParams }: URLProps) => {
         totalAnswers={userInfo.totalAnswers}
         badges={userInfo.badgeCounts}
       />
-      <div className="mt-10 flex gap-10">
+      <div className="mt-10 flex flex-col gap-10">
+        <LocalSearchBar 
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder="Search questions and answers..."
+          otherClasses="flex-1"
+        />
+
         <Tabs defaultValue={activeTab} className="flex-1">
           <TabsList className="background-light800_dark400 mb-6 inline-flex h-9 min-h-[42px] items-center justify-center rounded-lg bg-slate-100 p-1 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
             <ProfileTabsTrigger
@@ -111,6 +125,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               userId={userInfo.user._id}
               clerkId={clerkId}
               pageNumber={questionsPage}
+              searchQuery={searchQuery}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
@@ -119,6 +134,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               userId={userInfo.user._id}
               clerkId={clerkId}
               pageNumber={answersPage}
+              searchQuery={searchQuery}
             />
           </TabsContent>
         </Tabs>
@@ -126,4 +142,5 @@ const page = async ({ params, searchParams }: URLProps) => {
     </>
   );
 };
+
 export default page;

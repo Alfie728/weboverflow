@@ -5,6 +5,7 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
   },
   images: {
+    domains: ["jsearch.p.rapidapi.com", "encrypted-tbn0.gstatic.com"],
     remotePatterns: [
       {
         protocol: "https",

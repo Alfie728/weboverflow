@@ -7,7 +7,6 @@ import { getSavedQuestion } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-import { QUESTIONS_PAGE_SIZE } from "@/constants";
 import CollectionPageWrapper from "./CollectionPageWrapper";
 import type { Metadata } from "next";
 
@@ -26,8 +25,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-
-  const totalPages = Math.ceil(result.totalQuestions / QUESTIONS_PAGE_SIZE);
 
   return (
     <CollectionPageWrapper>
@@ -74,7 +71,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
-          totalPages={totalPages}
+          totalPages={result.totalPages}
         />
       </div>
     </CollectionPageWrapper>

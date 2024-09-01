@@ -8,12 +8,20 @@ interface QuestionTabProps {
   userId: string;
   clerkId?: string | null;
   pageNumber: number;
+  searchQuery: string;
 }
 
-const QuestionTab = async ({ searchParams, userId, clerkId, pageNumber }: QuestionTabProps) => {
+const QuestionTab = async ({
+  searchParams,
+  userId,
+  clerkId,
+  pageNumber,
+  searchQuery,
+}: QuestionTabProps) => {
   const result = await getUserQuestions({
     userId,
     page: pageNumber,
+    searchQuery,
   });
 
   return (
@@ -42,4 +50,5 @@ const QuestionTab = async ({ searchParams, userId, clerkId, pageNumber }: Questi
     </>
   );
 };
+
 export default QuestionTab;

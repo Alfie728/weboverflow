@@ -6,7 +6,6 @@ import Link from "next/link";
 import UserCard from "@/components/cards/UserCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-import { USERS_PAGE_SIZE } from "@/constants";
 import CommunityPageWrapper from "./CommunityPageWrapper";
 import type { Metadata } from "next";
 
@@ -21,8 +20,6 @@ const page = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-
-  const totalPages = Math.ceil(result.totalUsers / USERS_PAGE_SIZE);
 
   return (
     <CommunityPageWrapper>
@@ -55,7 +52,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
-          totalPages={totalPages}
+          totalPages={result.totalPages}
         />
       </div>
     </CommunityPageWrapper>
