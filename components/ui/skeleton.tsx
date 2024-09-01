@@ -8,8 +8,8 @@ function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md first-line:bg-slate-900/10 dark:bg-slate-50/10",
-        className 
+        "animate-pulse rounded-md bg-slate-200 dark:bg-slate-50/10", // Updated light mode color
+        className
       )}
       {...props}
     />

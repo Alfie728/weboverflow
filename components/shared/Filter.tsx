@@ -20,6 +20,7 @@ interface Props {
   containerClasses?: string;
   placeholder?: string;
   filterKey?: string;
+  noneText?: string;
 }
 
 const Filter = ({
@@ -28,6 +29,7 @@ const Filter = ({
   containerClasses,
   placeholder,
   filterKey,
+  noneText,
 }: Props) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -63,7 +65,7 @@ const Filter = ({
               value="none"
               className="text-dark500_light700 focus:bg-light-700 dark:focus:bg-dark-400"
             >
-              {placeholder || "No Filter"}
+              {noneText || "No Filter"}
             </SelectItem>
             {filters.map((item) => (
               <SelectItem

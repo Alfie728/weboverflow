@@ -13,6 +13,9 @@ export default async function JobsPage({
 }: {
   searchParams: { q?: string; location?: string; page?: string };
 }) {
+  // create a artificial delay to simulate a slow network request
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
   let jobs: Job[] = [];
@@ -65,7 +68,7 @@ export default async function JobsPage({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="flex flex-col gap-8">
+    <div>
       <div className="flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">Jobs</h1>
         {isApiError && (
@@ -75,7 +78,7 @@ export default async function JobsPage({
         )}
       </div>
 
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+      <div className="mt-11 flex w-full justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
@@ -89,6 +92,7 @@ export default async function JobsPage({
           containerClasses="max-md:flex"
           filterKey="location"
           placeholder="Select a Location"
+          noneText="No Location"
         />
       </div>
 
@@ -101,11 +105,14 @@ export default async function JobsPage({
       )}
 
       {totalFilteredPages > 1 && (
-        <Pagination
-          pageNumber={currentPage}
-          totalPages={totalFilteredPages}
-          isNext={isNextFiltered}
-        />
+        <div className="mt-10">
+          <Pagination
+            pageNumber={currentPage}
+            totalPages={totalFilteredPages}
+            isNext={isNextFiltered}
+          
+          />
+        </div>
       )}
     </div>
   );

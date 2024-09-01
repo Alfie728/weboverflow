@@ -12,9 +12,11 @@ import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
 import { QUESTIONS_PAGE_SIZE, TAGS_PAGE_SIZE } from "@/constants";
 
+import Interaction from "@/database/interaction.model"; // Ensure you import the Interaction model
+
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { userId } = params;
 
@@ -22,12 +24,25 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     if (!user) throw new Error("User not found");
 
     // Find interactions for the user and group by tags
-    // Interaction...
+    const interactions = await Interaction.aggregate([
+      { $match: { user: user._id } },
+      { $unwind: "$tags" },
+      { $group: { _id: "$tags", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 3 },
+      {
+        $lookup: {
+          from: "tags",
+          localField: "_id",
+          foreignField: "_id",
+          as: "tagDetails",
+        },
+      },
+      { $unwind: "$tagDetails" },
+      { $project: { _id: "$tagDetails._id", name: "$tagDetails.name" } },
+    ]);
 
-    return [
-      { _id: "1", name: "tag1" },
-      { _id: "2", name: "tag2" },
-    ];
+    return interactions;
   } catch (error) {
     console.log(error);
     throw error;
