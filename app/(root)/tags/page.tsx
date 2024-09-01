@@ -6,7 +6,6 @@ import NoResult from "@/components/shared/NoResult";
 import Link from "next/link";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
-import { TAGS_PAGE_SIZE } from "@/constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,8 +19,6 @@ const TagsPage = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-
-  const totalPages = Math.ceil(result.totalTags / TAGS_PAGE_SIZE);
 
   return (
     <>
@@ -77,7 +74,7 @@ const TagsPage = async ({ searchParams }: SearchParamsProps) => {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
-          totalPages={totalPages}
+          totalPages={result.totalPages}
         />
       </div>
     </>

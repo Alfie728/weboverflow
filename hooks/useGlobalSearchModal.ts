@@ -25,6 +25,8 @@ const useGlobalSearchModal = ({
   const closeModal = useCallback(() => {
     setIsOpen(false);
     onClose?.();
+    // Blur the input field when closing the modal
+    triggerRef.current?.blur();
   }, [onClose]);
 
   const toggleModal = useCallback(() => {

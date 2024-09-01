@@ -1,7 +1,6 @@
 import { getUserAnswers } from "@/lib/actions/user.action";
 import AnswerCard from "../cards/AnswerCard";
 import Pagination from "./Pagination";
-import { ANSWERS_PAGE_SIZE } from "@/constants";
 
 interface AnswerTabProps {
   searchParams: { [key: string]: string | undefined };
@@ -38,7 +37,7 @@ const AnswerTab = async ({
       <Pagination
         pageNumber={pageNumber}
         isNext={result.isNextAnswers}
-        totalPages={Math.ceil(result.totalAnswers / ANSWERS_PAGE_SIZE)}
+        totalPages={result.totalPages}
         tabName="answers"
       />
     </>

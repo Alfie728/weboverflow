@@ -193,7 +193,7 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { clerkId, searchQuery, filter, page = 1, pageSize = 8 } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = QUESTIONS_PAGE_SIZE } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = searchQuery
@@ -402,8 +402,9 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     }));
 
     const isNextAnswers = totalAnswers > skipAmount + userAnswers.length;
+    const totalPages = Math.ceil(totalAnswers / pageSize);
 
-    return { totalAnswers, answers: strippedUserAnswers, isNextAnswers };
+    return { totalAnswers, answers: strippedUserAnswers, isNextAnswers, totalPages };
   } catch (error) {
     console.log(error);
     throw error;
