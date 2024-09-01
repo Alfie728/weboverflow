@@ -13,9 +13,6 @@ export default async function JobsPage({
 }: {
   searchParams: { q?: string; location?: string; page?: string };
 }) {
-  // create a artificial delay to simulate a slow network request
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
-
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
   let jobs: Job[] = [];

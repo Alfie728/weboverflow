@@ -18,7 +18,7 @@ const UserCard = async ({ user }: Props) => {
   const interactedTags = await getTopInteractedTags({ userId: user._id });
   return (
     <article className=" w-full ">
-      <div className="background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border p-8">
+      <div className="background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border px-4 py-8">
         <Link
           href={`/profile/${user.clerkId}`}
           className="shadow-light100_darknone rounded-full"
@@ -43,7 +43,7 @@ const UserCard = async ({ user }: Props) => {
 
         <div className="mt-5">
           {interactedTags.length > 0 ? (
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               {interactedTags.map((tag) => (
                 <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
               ))}

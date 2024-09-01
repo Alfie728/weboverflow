@@ -36,7 +36,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <div className="mt-12 grid w-full grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-4">
+      <div className="mt-12 grid w-full grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
