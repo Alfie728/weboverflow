@@ -13,14 +13,18 @@ import Pagination from "@/components/shared/Pagination";
 import HomepageWrapper from "./HomepageWrapper";
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
+import { QuestionsListLoading } from "./loading";
 
 export const metadata: Metadata = {
   title: "Home | Web Overflow",
   description: "Home page",
 };
 
-export default async function Home({ searchParams }: SearchParamsProps) {
-  const { userId } = auth();
+const QuestionsList = async ({
+  searchParams,
+  userId,
+}: SearchParamsProps & { userId: string | null }) => {
   let result;
 
   if (searchParams?.filter === "recommended") {
@@ -46,23 +50,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   }
 
   return (
-    <HomepageWrapper>
-      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearchBar
-          iconPosition="left"
-          imgSrc="/assets/icons/search.svg"
-          placeholder="Search questions...  "
-          otherClasses="flex-1"
-        />
-        <Filter
-          filters={HomePageFilters}
-          otherClasses="min-h-[56px] sm:min-w-[170px]"
-          containerClasses="hidden max-md:flex"
-        />
-      </div>
-
-      <HomeFilters />
-
+    <>
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
           result.questions.map((question) => (
@@ -96,6 +84,34 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           totalPages={result.totalPages}
         />
       </div>
+    </>
+  );
+};
+
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const { userId } = auth();
+
+  return (
+    <HomepageWrapper>
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+        <LocalSearchBar
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder="Search questions...  "
+          otherClasses="flex-1"
+        />
+        <Filter
+          filters={HomePageFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+          containerClasses="hidden max-md:flex"
+        />
+      </div>
+
+      <HomeFilters />
+
+      <Suspense fallback={<QuestionsListLoading />}>
+        <QuestionsList searchParams={searchParams} userId={userId} />
+      </Suspense>
     </HomepageWrapper>
   );
 }
