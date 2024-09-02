@@ -13,45 +13,47 @@ import Pagination from "@/components/shared/Pagination";
 import HomepageWrapper from "./HomepageWrapper";
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
-
-const cache = new Map();
+import { Suspense, use } from 'react';
 
 export const metadata: Metadata = {
   title: "Home | Web Overflow",
   description: "Home page",
 };
 
+const NextPageLoader = ({ data }: { data: Promise<any> }) => {
+  use(data);
+  return null;
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
-  const cacheKey = JSON.stringify(searchParams);
-  let result;
+  const currentPage = searchParams.page ? +searchParams.page : 1;
 
-  if (cache.has(cacheKey)) {
-    result = cache.get(cacheKey);
-  } else {
-    if (searchParams?.filter === "recommended") {
-      if (userId) {
-        result = await getRecommendedQuestions({
-          userId,
-          page: searchParams.page ? +searchParams.page : 1,
-        });
-      } else {
-        result = {
-          questions: [],
-          isNext: false,
-          totalQuestions: 0,
-          totalPages: 0,
-        };
-      }
+  // Function to fetch data for a specific page
+  const fetchPageData = async (page: number) => {
+    const params = { ...searchParams, page: page.toString() } as { page: string; filter?: string; q?: string };
+    if (params.filter === "recommended" && userId) {
+      return getRecommendedQuestions({
+        userId,
+        page,
+      });
     } else {
-      result = await getQuestions({
-        searchQuery: searchParams.q,
-        filter: searchParams.filter,
-        page: searchParams.page ? +searchParams.page : 1,
+      return getQuestions({
+        searchQuery: params.q,
+        filter: params.filter,
+        page,
       });
     }
-    cache.set(cacheKey, result);
-  }
+  };
+
+  // Fetch current page data
+  const currentPageData = fetchPageData(currentPage);
+
+  // Prefetch next page data
+  const nextPageData = fetchPageData(currentPage + 1);
+
+  // Wait for current page data
+  const result = await currentPageData;
 
   return (
     <HomepageWrapper>
@@ -97,6 +99,11 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           />
         )}
       </div>
+
+      <Suspense fallback={<div>Loading next page...</div>}>
+        <NextPageLoader data={nextPageData} />
+      </Suspense>
+
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
