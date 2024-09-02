@@ -57,7 +57,7 @@ const Profile = ({ clerkId, user }: Props) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsSubmitting(true);
-    console.log("on submit");
+    // console.log("on submit");
 
     try {
       // update user

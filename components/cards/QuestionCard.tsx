@@ -4,24 +4,9 @@ import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
+import { QuestionProps } from "@/types";
 
-interface QuestionProps {
-  clerkId?: string | null;
-  _id: string;
-  title: string;
-  tags: { _id: string; name: string }[];
-  author: {
-    _id: string;
-    name: string;
-    username: string;
-    picture: string;
-    clerkId: string;
-  };
-  upvotes: string[];
-  views: number;
-  answers: Array<object>;
-  createdAt: Date;
-}
+
 
 const QuestionCard = ({
   clerkId,
