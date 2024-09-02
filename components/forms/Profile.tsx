@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProfileSchema } from "@/lib/validation";
 import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.action";
@@ -43,6 +43,14 @@ const Profile = ({ clerkId, user }: Props) => {
       bio: parsedUser.bio || "",
     },
   });
+
+  // Custom onChange handler to remove https:// prefix
+  const handlePortfolioWebsiteChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    form.setValue("portfolioWebsite", value.replace(/^https?:\/\//, ""));
+  };
 
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof ProfileSchema>) => {
@@ -135,9 +143,12 @@ const Profile = ({ clerkId, user }: Props) => {
                   placeholder="Your portfolio URL"
                   className="no-focus paragraph-regular light-border-2 background-light700_dark300 text-dark300_light700 min-h-[56px]"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handlePortfolioWebsiteChange(e);
+                  }}
                 />
               </FormControl>
-
               <FormMessage className="text-red-500" />
             </FormItem>
           )}
