@@ -22,8 +22,7 @@ const UserCard = async ({ user }: Props) => {
         className="background-light900_dark200 
           flex w-full flex-col items-center justify-center 
           rounded-2xl border px-4 py-8 
-          transition 
-          hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:border-dark-400 dark:hover:bg-dark-400"
+          transition hover:scale-105 hover:bg-light-800 hover:shadow-xl dark:border-dark-400 dark:hover:bg-dark-400"
       >
         <Link
           href={`/profile/${user.clerkId}`}
