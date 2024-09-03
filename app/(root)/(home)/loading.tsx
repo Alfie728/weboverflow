@@ -2,6 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import HomepageWrapper from "./HomepageWrapper";
 import { range } from "@/lib/utils";
 
+export const QuestionCardSkeleton = () => {
+  return <Skeleton className="h-48 w-full rounded-xl" />;
+};
+
 const Loading = () => {
   return (
     <HomepageWrapper>
@@ -21,7 +25,7 @@ const Loading = () => {
 
       <div className="flex flex-col gap-6">
         {range(10).map((item) => (
-          <Skeleton key={item} className="h-48 w-full rounded-xl" />
+          <QuestionCardSkeleton key={item} />
         ))}
       </div>
     </HomepageWrapper>

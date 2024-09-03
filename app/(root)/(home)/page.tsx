@@ -21,13 +21,19 @@ export const metadata: Metadata = {
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
+
+  // Set default filter if not present
+  const filter = searchParams?.filter || "newest";
+  const searchQuery = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+
   let result;
 
-  if (searchParams?.filter === "recommended") {
+  if (filter === "recommended") {
     if (userId) {
       result = await getRecommendedQuestions({
         userId,
-        page: searchParams.page ? +searchParams.page : 1,
+        page: Number(page),
       });
     } else {
       result = {
@@ -39,9 +45,9 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     }
   } else {
     result = await getQuestions({
-      searchQuery: searchParams.q,
-      filter: searchParams.filter,
-      page: searchParams.page ? +searchParams.page : 1,
+      searchQuery,
+      filter,
+      page: Number(page),
     });
   }
 
@@ -61,7 +67,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         />
       </div>
 
-      <HomeFilters />
+      <HomeFilters defaultFilter={filter} />
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
@@ -91,7 +97,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       </div>
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          pageNumber={Number(page)}
           isNext={result.isNext}
           totalPages={result.totalPages}
         />

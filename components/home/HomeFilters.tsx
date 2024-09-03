@@ -6,11 +6,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { formUrlQuery } from "@/lib/utils";
 
-const HomeFilters = () => {
+interface HomeFiltersProps {
+  defaultFilter: string;
+}
+
+const HomeFilters = ({ defaultFilter }: HomeFiltersProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState(defaultFilter);
 
   const handleTypeClick = (item: string) => {
     if (active === item) {
@@ -54,4 +58,5 @@ const HomeFilters = () => {
     </div>
   );
 };
+
 export default HomeFilters;
