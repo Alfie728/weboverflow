@@ -2,41 +2,20 @@
 
 import { HomePageFilters } from "@/constants/filters";
 import { Button } from "../ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { formUrlQuery } from "@/lib/utils";
+import useFilter from "@/hooks/useFilter";
 
 interface HomeFiltersProps {
   defaultFilter: string;
 }
 
 const HomeFilters = ({ defaultFilter }: HomeFiltersProps) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const [active, setActive] = useState(defaultFilter);
+  const { filter, setFilter } = useFilter({ filterParamName: "filter" });
 
   const handleTypeClick = (item: string) => {
-    if (active === item) {
-      setActive("");
-
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "filter",
-        value: null,
-      });
-
-      router.push(newUrl, { scroll: false });
+    if (filter === item) {
+      setFilter("");
     } else {
-      setActive(item);
-
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "filter",
-        value: item.toLowerCase(),
-      });
-
-      router.push(newUrl, { scroll: false });
+      setFilter(item.toLowerCase());
     }
   };
 
@@ -47,7 +26,7 @@ const HomeFilters = ({ defaultFilter }: HomeFiltersProps) => {
           key={item.value}
           onClick={() => handleTypeClick(item.value)}
           className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${
-            active === item.value
+            filter === item.value.toLowerCase()
               ? "bg-primary-100 text-primary-500 dark:bg-dark-400"
               : "bg-light-800 text-light-500 hover:bg-light-700  dark:bg-dark-300 dark:text-light-500 dark:hover:bg-dark-400"
           }`}
