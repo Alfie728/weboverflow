@@ -22,10 +22,14 @@ export const metadata: Metadata = {
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
 
+  // console.log('Home component rendered');
+  // console.log('searchParams:', searchParams);
+
   // Set default filter if not present
   const filter = searchParams?.filter || "newest";
   const searchQuery = searchParams?.q || "";
-  const page = searchParams?.page || 1;
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  // console.log('Parsed values:', { filter, searchQuery, page });
 
   let result;
 

@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 const LeftSidebar = () => {
   const pathname = usePathname();
   const { userId } = useAuth();
-  console.log(userId);
+  // console.log(userId);
 
   return (
     <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen flex-col justify-around border-r p-12 shadow-light-300 dark:shadow-none max-xl:p-6 max-lg:w-fit max-lg:p-3 max-sm:hidden xl:w-[350px]">
@@ -23,7 +23,7 @@ const LeftSidebar = () => {
           if (item.route === "/profile") {
             if (userId) {
               item.route = `${item.route}/${userId}`;
-              console.log(item.route);
+              // console.log(item.route);
             } else {
               return null;
             }

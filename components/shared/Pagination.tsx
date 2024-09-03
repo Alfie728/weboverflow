@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { formUrlQuery } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,6 +21,17 @@ const Pagination = ({
 }: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const currentPageParam = searchParams.get(tabName ? `${tabName}Page` : "page");
+    if (currentPageParam !== pageNumber.toString()) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(tabName ? `${tabName}Page` : "page", pageNumber.toString());
+      // Preserve other parameters
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      router.push(newUrl, { scroll: false });
+    }
+  }, [pageNumber, searchParams, router, tabName]);
 
   const handleNavigation = (page: number) => {
     const newUrl = formUrlQuery({

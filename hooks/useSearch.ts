@@ -18,14 +18,12 @@ const useSearch = ({ searchParamName }: UseSearchProps) => {
   const isSearchChangedRef = useRef(false);
 
   useEffect(() => {
-    if (debouncedSearch !== query) {
-      isSearchChangedRef.current = true;
-    }
-  }, [debouncedSearch, query]);
-
-  useEffect(() => {
+    // console.log('useSearch useEffect triggered');
+    // console.log('debouncedSearch:', debouncedSearch);
+    // console.log('query:', query);
     if (debouncedSearch !== query) {
       const params = new URLSearchParams(searchParams);
+      // console.log('Current params:', params.toString());
 
       if (debouncedSearch) {
         params.set(searchParamName, debouncedSearch);
@@ -34,11 +32,13 @@ const useSearch = ({ searchParamName }: UseSearchProps) => {
       }
 
       if (isSearchChangedRef.current) {
+        // console.log('Search changed, resetting page to 1');
         params.set("page", "1");
         isSearchChangedRef.current = false;
       }
 
       const newUrl = `${window.location.pathname}?${params.toString()}`;
+      // console.log('New URL:', newUrl);
       router.push(newUrl, { scroll: false });
     }
   }, [debouncedSearch, query, router, searchParams, searchParamName]);

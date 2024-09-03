@@ -28,7 +28,7 @@ interface Props {
 const Profile = ({ clerkId, user }: Props) => {
   const parsedUser = JSON.parse(user);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(isSubmitting);
+  // console.log(isSubmitting);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -57,7 +57,7 @@ const Profile = ({ clerkId, user }: Props) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsSubmitting(true);
-    console.log("on submit");
+    // console.log("on submit");
 
     try {
       // update user

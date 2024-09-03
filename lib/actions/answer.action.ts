@@ -28,7 +28,7 @@ export async function createAnswer(params: CreateAnswerParams) {
       author,
     });
 
-    console.log(newAnswer);
+    // console.log(newAnswer);
 
     // Add the answer to the question's answers array
     const questionObject = await Question.findByIdAndUpdate(question, {
