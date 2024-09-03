@@ -9,10 +9,10 @@ interface HomeFiltersProps {
 }
 
 const HomeFilters = ({ defaultFilter }: HomeFiltersProps) => {
-  const { filter, setFilter } = useFilter({ filterParamName: "filter" });
+  const { filter, setFilter } = useFilter({ filterParamName: "filter", defaultFilter });
 
   const handleTypeClick = (item: string) => {
-    if (filter === item) {
+    if (filter === item.toLowerCase()) {
       setFilter("");
     } else {
       setFilter(item.toLowerCase());
