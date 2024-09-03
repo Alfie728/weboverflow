@@ -32,7 +32,10 @@ const useFilter = ({ filterParamName }: UseFilterProps) => {
       }
 
       // Reset page to 1 when filter changes
-      params.set("page", "1");
+      if (isFilterChangedRef.current) {
+        params.set("page", "1");
+        isFilterChangedRef.current = false;
+      }
 
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       router.push(newUrl, { scroll: false });
